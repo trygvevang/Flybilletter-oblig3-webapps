@@ -17,8 +17,27 @@ namespace Flybilletter_oblig3_webapps.Models
         [Required]
         public QuestionType QuestionType { get; set; }
         public string Answer { get; set; } // If answer == null then it is not answered
+    }
 
-        public List<Question> GetAll()
+    public class Person
+    {
+        [Key]
+        public int ID { get; set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
+
+    }
+
+    public class QuestionType // Has class because this allows to get all questions with of a certain type
+    {
+        [Key]
+        public int ID { get; set; }
+        public string Type { get; set; }
+    }
+
+    public static class CRUD
+    {
+        public static List<Question> GetAllQuestions()
         {
             using (var db = new DB())
             {
@@ -34,7 +53,7 @@ namespace Flybilletter_oblig3_webapps.Models
             return null;
         }
 
-        public Question Get(int ID)
+        public static Question GetSingleQuestion(int ID)
         {
             if (ID >= 0)
             {
@@ -53,13 +72,15 @@ namespace Flybilletter_oblig3_webapps.Models
             return null;
         }
 
-        public bool Add(Question question)
+        public static bool AddQuestion(Question question)
         {
             // ModelState.IsValid
             using (var db = new DB())
             {
                 try
                 {
+                    bool personExists = db.People.Where(p => p.Firstname == question.Person.Firstname && p.Lastname == question.Person.Lastname).FirstOrDefault() != null;
+                    if (!personExists) db.People.Add(question.Person);
                     db.Questions.Add(question);
                     db.SaveChanges();
                     return true;
@@ -71,16 +92,8 @@ namespace Flybilletter_oblig3_webapps.Models
             }
             return false;
         }
-    }
 
-    public class Person
-    {
-        [Key]
-        public int ID { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-
-        public List<Person> GetAll()
+        public static List<Person> GetAllPeople()
         {
             using (var db = new DB())
             {
@@ -96,7 +109,7 @@ namespace Flybilletter_oblig3_webapps.Models
             return null;
         }
 
-        public Person Get(int ID)
+        public static Person GetSinglePerson(int ID)
         {
             if (ID >= 0)
             {
@@ -114,36 +127,6 @@ namespace Flybilletter_oblig3_webapps.Models
             }
             return null;
         }
-
-        public bool Add(Person person)
-        {
-            // ModelState.IsValid
-            using (var db = new DB())
-            {
-                try
-                {
-                    bool exists = db.People.Where(p => p.Firstname == person.Firstname && p.Lastname == person.Lastname).FirstOrDefault() != null;
-                    if (!exists)
-                    {
-                        db.People.Add(person);
-                        db.SaveChanges();
-                    }
-                    return true; // Return true even if person exists. This method is to be used when adding a question
-                }
-                catch (Exception e)
-                {
-                    // TODO: Handle exception
-                }
-            }
-            return false;
-        }
-    }
-
-    public class QuestionType // Has class because this allows to get all questions with of a certain type
-    {
-        [Key]
-        public int ID { get; set; }
-        public string Type { get; set; }
     }
     
 }
