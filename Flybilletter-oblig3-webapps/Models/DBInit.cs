@@ -81,6 +81,7 @@ namespace Flybilletter_oblig3_webapps.Models
             context.Questions.Add(sp_1);
             context.Questions.Add(sp_2);
             context.Questions.Add(sp_3);
+            base.Seed(context);
 
         }
     }
