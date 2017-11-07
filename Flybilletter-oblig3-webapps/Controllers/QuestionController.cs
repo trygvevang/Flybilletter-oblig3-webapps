@@ -10,9 +10,9 @@ using System.Text;
 
 namespace Flybilletter_oblig3_webapps.Controllers
 {
-    public class ServiceController : ApiController
+    public class QuestionController : ApiController
     {
-        // GET api/Service
+        // GET api/Question
         public HttpResponseMessage Get()
         {
             List<Question> allQuestions = CRUD.GetAllQuestions();
@@ -27,7 +27,7 @@ namespace Flybilletter_oblig3_webapps.Controllers
             };
         }
 
-        // GET api/Service/5
+        // GET api/Question/5
         public HttpResponseMessage Get(int ID)
         {
             var question = CRUD.GetSingleQuestion(ID);
@@ -42,7 +42,7 @@ namespace Flybilletter_oblig3_webapps.Controllers
             };
         }
 
-        // POST api/Service
+        // POST api/Question
         public HttpResponseMessage Post(Question question)
         {
             if (ModelState.IsValid)
