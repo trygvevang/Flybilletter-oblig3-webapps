@@ -43,7 +43,7 @@ namespace Flybilletter_oblig3_webapps.Models
             {
                 try
                 {
-                    return db.Questions.ToList();
+                    return db.Questions.Include("Person").Include("QuestionType").ToList();
                 }
                 catch (Exception e)
                 {
@@ -61,7 +61,7 @@ namespace Flybilletter_oblig3_webapps.Models
                 {
                     try
                     {
-                        return db.Questions.Where(k => k.ID == ID).FirstOrDefault();
+                        return db.Questions.Include("Person").Include("QuestionType").Where(k => k.ID == ID).FirstOrDefault();
                     }
                     catch (Exception e)
                     {
