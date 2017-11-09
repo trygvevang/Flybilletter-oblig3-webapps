@@ -1,9 +1,27 @@
 ﻿<h1>FAQ</h1>
 
-<div> <!--Show faq *ngIf="showFAQ" -->
-
+<div *ngIf="showFAQ"> <!--Show faq *ngIf="showFAQ" -->
+    <div *ngIf="loading">Laster spørsmål...</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Spørsmål</th>
+                <th>Svar</th>
+                <th>Spørsmålskategori</th>
+                <th>Person</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let question of allQuestions">
+            <tr>
+                <td>{{question.Quest}}</td>
+                <td>{{question.Answer}}</td>
+                <td>{{question.QuestionType.Type}}</td>
+                <td>{{question.Person.Firstname + " " + question.Person.Lastname}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
-<div> <!--Submit new question *ngIf="submitQ" -->
+<div *ngIf="submitQ"> <!--Submit new question *ngIf="submitQ" -->
 
 </div>
