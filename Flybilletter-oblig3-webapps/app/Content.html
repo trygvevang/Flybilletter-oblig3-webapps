@@ -1,5 +1,6 @@
 <h1 class="text-center">FAQ</h1>
 <div *ngIf="showFAQ" class="col-md-8 col-md-offset-2"> <!--Show faq *ngIf="showFAQ" -->
+    <a class="btn btn-primary" (click)="showQuestionForm()">Still spørsmål</a>
     <div *ngIf="loading">Laster spørsmål...</div>
     <table class="table">
         <thead class="thead">
@@ -21,6 +22,35 @@
     </table>
 </div>
 
-<div *ngIf="submitQ"> <!--Submit new question *ngIf="submitQ" -->
-
+<div *ngIf="submitQ" class="col-md-8 col-md-offset-2"> <!--Submit new question *ngIf="submitQ" -->
+    <form [formGroup]="form" (ngSubmit)="submitQuestion()">
+        <input class="form-control" formControlName="ID" type="hidden" />
+        <div class="form-group">
+            <label>Fornavn</label>
+            <input class="form-control" formControlName="Firstname" />
+            <p class="alert alert-warning" [hidden]="form.controls.Firstname.valid || (form.controls.Firstname.pristine && !submitted)">
+                Fornavn er obligatorisk, og må minst være to bokstaver.
+            </p>
+        </div>
+        <div class="form-group">
+            <label>Etternavn</label>
+            <input class="form-control" formControlName="Firstname" />
+            <p class="alert alert-warning" [hidden]="form.controls.Lastname.valid || (form.controls.Lastname.pristine && !submitted)">
+                Etternavn er obligatorisk, og må minst være to bokstaver.
+            </p>
+        </div>
+        <div class="form-group">
+            <label>Spørsmål</label>
+            <input class="form-control" formControlName="Question" />
+            <p class="alert alert-warning" [hidden]="form.controls.Question.valid || (form.controls.Question.pristine && !submitted)">
+                Spørsmål må fylles inn, og må minst være to bokstaver.
+            </p>
+        </div>
+        <div class="form-group">
+            <label>Kategori</label>
+            <select class="form-control" formControlName="QuestionType">
+                <option *ngFor="let category of allQuestionTypes" [value]="category">{{category.Type}}</option>
+            </select>
+        </div>
+    </form>
 </div>

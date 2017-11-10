@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import "rxjs/add/operator/map";
 import {Headers} from "@angular/http";
 import { Question } from './Question';
+import { QuestionType } from './QuestionType';
 
 @Component({
     selector: "application",
@@ -14,16 +15,17 @@ export class Content {
     showFAQ: boolean;
     submitQ: boolean;
     allQuestions: Array<Question>;
+    allQuestionTypes: Array<QuestionType>;
     form: FormGroup;
     loading: boolean;
 
     constructor(private _http: Http, private fb: FormBuilder) {
         this.form = fb.group({
-            /*ID: [""],
+            ID: [""],
             Firstname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
             Lastname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
             Question: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ]{2,}")])],
-            QuestionType: [] */
+            QuestionType: [null, Validators.compose([Validators.required, Validators.pattern("[0,9]{1,2}")])]
         });
     }
 
@@ -32,6 +34,7 @@ export class Content {
         this.showFAQ = true;
         this.submitQ = false;
         this.getAll();
+        this.getAllQuestionTypes();
     }
 
     getAll() {
@@ -50,5 +53,36 @@ export class Content {
                 }
             },
             error => alert(error), () => console.log("All questions loaded (get-api/Question)."));
+    }
+
+    getAllQuestionTypes() {
+        this._http.get("api/QuetionType")
+            .map(data => {
+                let jsonData = data.json();
+                return jsonData;
+            })
+            .subscribe(jsonData => {
+                this.allQuestionTypes = [];
+                if (jsonData) {
+                    for (let questType of jsonData) {
+                        this.allQuestionTypes.push(questType);
+                    }
+                    this.loading = false;
+                }
+            },
+            error => alert(error), () => console.log("All questions loaded (get-api/QuestionType)."));
+    }
+
+    showQuestionForm() {
+        this.form.setValue({ // Reseting form just in case there were some changes there before.
+            ID: "",
+            Firstname: "",
+            Lastname: "",
+            Question: "",
+            QuestionType: ""
+        });
+        this.form.markAsPristine();
+        this.showFAQ = false;
+        this.submitQ = true;
     }
 }

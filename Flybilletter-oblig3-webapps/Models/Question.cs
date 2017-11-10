@@ -52,7 +52,7 @@ namespace Flybilletter_oblig3_webapps.Models
             }
             return null;
         }
-
+        
         public static Question GetSingleQuestion(int ID)
         {
             if (ID >= 0)
@@ -62,6 +62,41 @@ namespace Flybilletter_oblig3_webapps.Models
                     try
                     {
                         return db.Questions.Include("Person").Include("QuestionType").Where(k => k.ID == ID).FirstOrDefault();
+                    }
+                    catch (Exception e)
+                    {
+                        // TODO: Handle exception
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static List<QuestionType> GetAllQuestionTypes()
+        {
+            using (var db = new DB())
+            {
+                try
+                {
+                    return db.QuestTypes.ToList();
+                }
+                catch (Exception e)
+                {
+                    // TODO: Handle exception
+                }
+            }
+            return null;
+        }
+
+        public static Question GetSingleQuestionType(int ID)
+        {
+            if (ID >= 0)
+            {
+                using (var db = new DB())
+                {
+                    try
+                    {
+                        return db.Questions.Where(k => k.ID == ID).FirstOrDefault();
                     }
                     catch (Exception e)
                     {

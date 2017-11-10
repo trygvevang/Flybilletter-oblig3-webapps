@@ -17,13 +17,20 @@ var Content = (function () {
     function Content(_http, fb) {
         this._http = _http;
         this.fb = fb;
-        this.form = fb.group({});
+        this.form = fb.group({
+            ID: [""],
+            Firstname: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
+            Lastname: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
+            Question: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[a-zA-ZøæåØÆÅ]{2,}")])],
+            QuestionType: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[0,9]{1,2}")])]
+        });
     }
     Content.prototype.ngOnInit = function () {
         this.loading = true;
         this.showFAQ = true;
         this.submitQ = false;
         this.getAll();
+        this.getAllQuestionTypes();
     };
     Content.prototype.getAll = function () {
         var _this = this;
@@ -42,6 +49,36 @@ var Content = (function () {
                 _this.loading = false;
             }
         }, function (error) { return alert(error); }, function () { return console.log("All questions loaded (get-api/Question)."); });
+    };
+    Content.prototype.getAllQuestionTypes = function () {
+        var _this = this;
+        this._http.get("api/QuetionType")
+            .map(function (data) {
+            var jsonData = data.json();
+            return jsonData;
+        })
+            .subscribe(function (jsonData) {
+            _this.allQuestionTypes = [];
+            if (jsonData) {
+                for (var _i = 0, jsonData_2 = jsonData; _i < jsonData_2.length; _i++) {
+                    var questType = jsonData_2[_i];
+                    _this.allQuestionTypes.push(questType);
+                }
+                _this.loading = false;
+            }
+        }, function (error) { return alert(error); }, function () { return console.log("All questions loaded (get-api/QuestionType)."); });
+    };
+    Content.prototype.showQuestionForm = function () {
+        this.form.setValue({
+            ID: "",
+            Firstname: "",
+            Lastname: "",
+            Question: "",
+            QuestionType: ""
+        });
+        this.form.markAsPristine();
+        this.showFAQ = false;
+        this.submitQ = true;
     };
     return Content;
 }());
