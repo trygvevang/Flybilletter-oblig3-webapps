@@ -56,7 +56,7 @@ export class Content {
     }
 
     getAllQuestionTypes() {
-        this._http.get("api/QuetionType")
+        this._http.get("api/QuestionType")
             .map(data => {
                 let jsonData = data.json();
                 return jsonData;
@@ -84,5 +84,24 @@ export class Content {
         this.form.markAsPristine();
         this.showFAQ = false;
         this.submitQ = true;
+    }
+
+    submitQuestion() {
+        var question = new Question();
+        question.Quest = this.form.value.Question;
+        //question.Person = 
+        /*
+        Lage en entitet Person som bare består av firstname,lastname
+        Sende den dataen som personobjektet til server-side
+        serverside håndterer dataen, ved å søke etter personen i databasen
+            exist = bool med db spørring om person finnes
+            if (!exist)
+            {
+                var kunde = lagKundeBasertPåDataFraWebApp
+                db.lagreKunde(kunde)
+            }
+            var kunde = lagKundeBasertPåDataFraWebApp
+            return lagreSpørsmålMedPersonFraDb() // Metode som lagrer kunde returnerer true/false
+        */
     }
 }

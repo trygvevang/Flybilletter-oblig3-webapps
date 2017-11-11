@@ -34,7 +34,7 @@
         </div>
         <div class="form-group">
             <label>Etternavn</label>
-            <input class="form-control" formControlName="Firstname" />
+            <input class="form-control" formControlName="Lastname" />
             <p class="alert alert-warning" [hidden]="form.controls.Lastname.valid || (form.controls.Lastname.pristine && !submitted)">
                 Etternavn er obligatorisk, og må minst være to bokstaver.
             </p>
@@ -52,5 +52,7 @@
                 <option *ngFor="let category of allQuestionTypes" [value]="category">{{category.Type}}</option>
             </select>
         </div>
+        <button type="submit" class="btn btn-success">Still spørsmål</button>
+        <button class="btn btn-warning" (click)="showQuestionForm()">Avbryt</button>
     </form>
 </div>

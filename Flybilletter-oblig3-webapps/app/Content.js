@@ -13,6 +13,7 @@ var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
 var forms_1 = require("@angular/forms");
 require("rxjs/add/operator/map");
+var Question_1 = require("./Question");
 var Content = (function () {
     function Content(_http, fb) {
         this._http = _http;
@@ -52,7 +53,7 @@ var Content = (function () {
     };
     Content.prototype.getAllQuestionTypes = function () {
         var _this = this;
-        this._http.get("api/QuetionType")
+        this._http.get("api/QuestionType")
             .map(function (data) {
             var jsonData = data.json();
             return jsonData;
@@ -79,6 +80,24 @@ var Content = (function () {
         this.form.markAsPristine();
         this.showFAQ = false;
         this.submitQ = true;
+    };
+    Content.prototype.submitQuestion = function () {
+        var question = new Question_1.Question();
+        question.Quest = this.form.value.Question;
+        //question.Person = 
+        /*
+        Lage en entitet Person som bare består av firstname,lastname
+        Sende den dataen som personobjektet til server-side
+        serverside håndterer dataen, ved å søke etter personen i databasen
+            exist = bool med db spørring om person finnes
+            if (!exist)
+            {
+                var kunde = lagKundeBasertPåDataFraWebApp
+                db.lagreKunde(kunde)
+            }
+            var kunde = lagKundeBasertPåDataFraWebApp
+            return lagreSpørsmålMedPersonFraDb() // Metode som lagrer kunde returnerer true/false
+        */
     };
     return Content;
 }());
