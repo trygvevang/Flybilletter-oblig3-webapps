@@ -5,6 +5,7 @@ import "rxjs/add/operator/map";
 import {Headers} from "@angular/http";
 import { Question } from './Question';
 import { QuestionType } from './QuestionType';
+import { Person } from './Person';
 
 @Component({
     selector: "application",
@@ -24,7 +25,7 @@ export class Content {
             ID: [""],
             Firstname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
             Lastname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
-            Question: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ]{2,}")])],
+            Question: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-ZøæåØÆÅ ]{2,}[?]$")])],
             QuestionType: [null, Validators.compose([Validators.required, Validators.pattern("[0,9]{1,2}")])]
         });
     }
@@ -87,21 +88,32 @@ export class Content {
     }
 
     submitQuestion() {
+        var person = new Person();
+        person.Firstname = this.form.value.Firstname;
+        person.Lastname = this.form.value.Lastname;
+        
+        var questionType = this.form.value.QuestionType;
         var question = new Question();
         question.Quest = this.form.value.Question;
-        //question.Person = 
-        /*
-        Lage en entitet Person som bare består av firstname,lastname
-        Sende den dataen som personobjektet til server-side
-        serverside håndterer dataen, ved å søke etter personen i databasen
-            exist = bool med db spørring om person finnes
-            if (!exist)
-            {
-                var kunde = lagKundeBasertPåDataFraWebApp
-                db.lagreKunde(kunde)
-            }
-            var kunde = lagKundeBasertPåDataFraWebApp
-            return lagreSpørsmålMedPersonFraDb() // Metode som lagrer kunde returnerer true/false
-        */
+        question.Person = person;
+        var e = questionType as HTMLSelectElement;
+        question.QuestionType = e.options[e.selectedIndex].value;
+
+        var body: string = JSON.stringify(question);
+        var headers = new Headers({ "Content-Type": "application/json" });
+
+        console.log(body);
+        this._http.post("api/Question", body, { headers: headers })
+            .map(returData => returData.toString())
+            .subscribe(
+            retur => {
+                this.getAll();
+                this.getAllQuestionTypes();
+                this.submitQ = false;
+                this.showFAQ = true;
+            },
+            error => alert(error),
+            () => console.log("Question submitted (post-api/Question)")
+            );
     }
 }

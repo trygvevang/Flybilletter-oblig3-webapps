@@ -114,9 +114,39 @@ namespace Flybilletter_oblig3_webapps.Models
             {
                 try
                 {
-                    bool personExists = db.People.Where(p => p.Firstname == question.Person.Firstname && p.Lastname == question.Person.Lastname).FirstOrDefault() != null;
-                    if (!personExists) db.People.Add(question.Person);
+                    bool personExists = db.People.Where(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)).FirstOrDefault() != null;
+                    if (!personExists)
+                    {
+                        db.People.Add(question.Person);
+                        question.Person = db.People.Where(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)).FirstOrDefault();
+                    }
+
+                    /* TODO: Got to do some changes here... Got to match what is comming from webapp to what this function expects...
+                    bool typeExists = db.QuestTypes.Where(q => q.Type.Equals(question.QuestionType)).FirstOrDefault() != null;
+                    if (!typeExists)
+                    {
+                        db.QuestTypes.Add(new QuestionType({ Type = question.QuestionType }));
+                        question.QuestionType = db.QuestTypes.Where(q => q.Type.Equals(question.QuestionType)).FirstOrDefault();
+                    } */
                     db.Questions.Add(question);
+                    db.SaveChanges();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    // TODO: Handle exception
+                }
+            }
+            return false;
+        }
+
+        public static bool AddPerson(Person person)
+        {
+            using (var db = new DB())
+            {
+                try
+                {
+                    db.People.Add(person);
                     db.SaveChanges();
                     return true;
                 }
@@ -144,20 +174,17 @@ namespace Flybilletter_oblig3_webapps.Models
             return null;
         }
 
-        public static Person GetSinglePerson(int ID)
+        public static Person GetSinglePerson(string Firstname, string Lastname)
         {
-            if (ID >= 0)
+            using (var db = new DB())
             {
-                using (var db = new DB())
+                try
                 {
-                    try
-                    {
-                        return db.People.Where(p => p.ID == ID).FirstOrDefault();
-                    }
-                    catch (Exception e)
-                    {
-                        // TODO: Handle exception
-                    }
+                    return db.People.Where(p => p.Firstname == Firstname && p.Lastname == Lastname).FirstOrDefault();
+                }
+                catch (Exception e)
+                {
+                    // TODO: Handle exception
                 }
             }
             return null;

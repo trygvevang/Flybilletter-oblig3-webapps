@@ -45,18 +45,16 @@ namespace Flybilletter_oblig3_webapps.Controllers
         // POST api/Question
         public HttpResponseMessage Post(Question question)
         {
-            if (ModelState.IsValid)
+            bool OK = CRUD.AddQuestion(question);
+            if (OK)
             {
-                bool OK = CRUD.AddQuestion(question);
-                if (OK)
+                return new HttpResponseMessage()
                 {
-                    return new HttpResponseMessage()
-                    {
-                        StatusCode = HttpStatusCode.OK
-                    };
+                    StatusCode = HttpStatusCode.OK
+                };
 
-                }
             }
+            
             return new HttpResponseMessage()
             {
                 StatusCode = HttpStatusCode.NotFound,
