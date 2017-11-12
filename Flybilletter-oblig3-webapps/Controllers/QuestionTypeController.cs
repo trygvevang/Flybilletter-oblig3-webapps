@@ -1,21 +1,21 @@
-﻿using System;
+﻿using Flybilletter_oblig3_webapps.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
-using Flybilletter_oblig3_webapps.Models;
-using System.Web.Script.Serialization;
 using System.Text;
+using System.Web.Http;
+using System.Web.Script.Serialization;
 
 namespace Flybilletter_oblig3_webapps.Controllers
 {
-    public class QuestionController : ApiController
+    public class QuestionTypeController : ApiController
     {
-        // GET api/Question
+        // GET api/QuestionType
         public HttpResponseMessage Get()
         {
-            List<Question> allQuestions = CRUD.GetAllQuestions();
+            List<QuestionType> allQuestions = CRUD.GetAllQuestionTypes();
 
             var json = new JavaScriptSerializer();
             var stringJson = json.Serialize(allQuestions);
@@ -27,10 +27,10 @@ namespace Flybilletter_oblig3_webapps.Controllers
             };
         }
 
-        // GET api/Question/5
+        // GET api/QuestionType/5
         public HttpResponseMessage Get(int ID)
         {
-            var question = CRUD.GetSingleQuestion(ID);
+            var question = CRUD.GetSingleQuestionType(ID);
 
             var json = new JavaScriptSerializer();
             var stringJson = json.Serialize(question);
@@ -39,26 +39,6 @@ namespace Flybilletter_oblig3_webapps.Controllers
             {
                 Content = new StringContent(stringJson, Encoding.UTF8, "application/json"),
                 StatusCode = HttpStatusCode.OK
-            };
-        }
-
-        // POST api/Question
-        public HttpResponseMessage Post(QuestionData question)
-        {
-            bool OK = CRUD.AddQuestion(question);
-            if (OK)
-            {
-                return new HttpResponseMessage()
-                {
-                    StatusCode = HttpStatusCode.OK
-                };
-
-            }
-            
-            return new HttpResponseMessage()
-            {
-                StatusCode = HttpStatusCode.NotFound,
-                Content = new StringContent("Could not add question to the database.")
             };
         }
     }

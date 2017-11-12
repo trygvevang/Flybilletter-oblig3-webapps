@@ -1,9 +1,8 @@
 ﻿import { Person } from './Person';
-import { QuestionType } from './QuestionType';
 export class Question {
     ID: number;
     Person: Person;
     Quest: string;
-    QuestionType: QuestionType;
+    QuestionType: string; //Question is string so backend can validate if category exists or not.
     Answer: string;
 }
