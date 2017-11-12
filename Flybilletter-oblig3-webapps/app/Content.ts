@@ -93,11 +93,11 @@ export class Content {
         person.Lastname = this.form.value.Lastname;
         
         var questionType = this.form.value.QuestionType;
+
         var question = new Question();
         question.Quest = this.form.value.Question;
         question.Person = person;
-        var e = questionType as HTMLSelectElement;
-        question.QuestionType = e.options[e.selectedIndex].value;
+        question.QuestionType = questionType;
 
         var body: string = JSON.stringify(question);
         var headers = new Headers({ "Content-Type": "application/json" });

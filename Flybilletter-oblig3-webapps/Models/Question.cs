@@ -19,6 +19,13 @@ namespace Flybilletter_oblig3_webapps.Models
         public string Answer { get; set; } // If answer == null then it is not answered
     }
 
+    public class QuestionData
+    {
+        public Person Person { get; set; }
+        public string Quest { get; set; }
+        public int QuestionType { get; set; }
+    }
+
     public class Person
     {
         [Key]
@@ -107,28 +114,29 @@ namespace Flybilletter_oblig3_webapps.Models
             return null;
         }
 
-        public static bool AddQuestion(Question question)
+        public static bool AddQuestion(QuestionData question)
         {
             // ModelState.IsValid
             using (var db = new DB())
             {
                 try
                 {
+                    var questionObj = new Question();
+                    questionObj.Quest = question.Quest;
+                
                     bool personExists = db.People.Where(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)).FirstOrDefault() != null;
                     if (!personExists)
                     {
-                        db.People.Add(question.Person);
-                        question.Person = db.People.Where(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)).FirstOrDefault();
+                        var person = new Person();
+                        person.Firstname = question.Person.Firstname;
+                        person.Lastname = question.Person.Lastname;
+                        db.People.Add(person);
+                        db.SaveChanges(); // Save changes for fetching person on the next line
+                        questionObj.Person = db.People.Where(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)).FirstOrDefault();
                     }
-
-                    /* TODO: Got to do some changes here... Got to match what is comming from webapp to what this function expects...
-                    bool typeExists = db.QuestTypes.Where(q => q.Type.Equals(question.QuestionType)).FirstOrDefault() != null;
-                    if (!typeExists)
-                    {
-                        db.QuestTypes.Add(new QuestionType({ Type = question.QuestionType }));
-                        question.QuestionType = db.QuestTypes.Where(q => q.Type.Equals(question.QuestionType)).FirstOrDefault();
-                    } */
-                    db.Questions.Add(question);
+                    
+                    questionObj.QuestionType = db.QuestTypes.Where(q => q.ID == question.QuestionType).FirstOrDefault();
+                    db.Questions.Add(questionObj);
                     db.SaveChanges();
                     return true;
                 }

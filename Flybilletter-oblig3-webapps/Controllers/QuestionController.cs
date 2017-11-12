@@ -43,7 +43,7 @@ namespace Flybilletter_oblig3_webapps.Controllers
         }
 
         // POST api/Question
-        public HttpResponseMessage Post(Question question)
+        public HttpResponseMessage Post(QuestionData question)
         {
             bool OK = CRUD.AddQuestion(question);
             if (OK)

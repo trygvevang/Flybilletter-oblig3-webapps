@@ -92,8 +92,7 @@ var Content = (function () {
         var question = new Question_1.Question();
         question.Quest = this.form.value.Question;
         question.Person = person;
-        var e = questionType;
-        question.QuestionType = e.options[e.selectedIndex].value;
+        question.QuestionType = questionType;
         var body = JSON.stringify(question);
         var headers = new http_2.Headers({ "Content-Type": "application/json" });
         console.log(body);
