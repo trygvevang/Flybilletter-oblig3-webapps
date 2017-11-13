@@ -32,6 +32,7 @@ namespace Flybilletter_oblig3_webapps.Models
         public int ID { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
+        public string Email { get; set; }
 
     }
 

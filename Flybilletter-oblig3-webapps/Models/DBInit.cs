@@ -13,12 +13,14 @@ namespace Flybilletter_oblig3_webapps.Models
             var ola = new Person()
             {
                 Firstname = "Ola",
-                Lastname = "Nordmann"
+                Lastname = "Nordmann",
+                Email = "ola@nordmann.no"
             };
             var kari = new Person()
             {
                 Firstname = "Kari",
-                Lastname = "Nordmann"
+                Lastname = "Nordmann",
+                Email = "kari@nordmann.no"
             };
 
             var betaling = new QuestionType()
