@@ -10,12 +10,12 @@ using System.Web.Script.Serialization;
 
 namespace Flybilletter_oblig3_webapps.Controllers
 {
-    public class QuestionTypeController : ApiController
+    public class QuestionCategoryController : ApiController
     {
-        // GET api/QuestionType
+        // GET api/QuestionCategory
         public HttpResponseMessage Get()
         {
-            List<QuestionType> allQuestions = CRUD.GetAllQuestionTypes();
+            List<QuestionCategory> allQuestions = CRUD.GetAllQuestionCategories();
 
             var json = new JavaScriptSerializer();
             var stringJson = json.Serialize(allQuestions);
@@ -27,7 +27,7 @@ namespace Flybilletter_oblig3_webapps.Controllers
             };
         }
 
-        // GET api/QuestionType/5
+        // GET api/QuestionCategory/5
         public HttpResponseMessage Get(int ID)
         {
             var question = CRUD.GetSingleQuestionType(ID);

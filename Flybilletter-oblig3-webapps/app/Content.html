@@ -1,6 +1,6 @@
-<h1 class="text-center">FAQ</h1>
 <div *ngIf="showFAQ" class="col-md-8 col-md-offset-2"> <!--Show faq *ngIf="showFAQ" -->
     <a class="btn btn-primary" (click)="showQuestionForm()">Still spørsmål</a>
+    <h1 class="text-center">FAQ</h1>
     <div *ngIf="loading">Laster spørsmål...</div>
     <table class="table">
         <thead class="thead">
@@ -12,11 +12,53 @@
             </tr>
         </thead>
         <tbody *ngFor="let question of allQuestions">
-            <tr *ngIf="question.Answer != null">
+            <tr *ngIf="question.Answer != null"> <!--Should be question.Person == null-->
+                <td>{{question.Quest}}</td>
+                <td>{{question.Answer}}</td>
+                <td>{{question.Category.Type}}</td>
+                <td *ngIf="question.Person">{{question.Person.Firstname + " " + question.Person.Lastname}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h1 class="text-center">Alle brukerstilte spørsmål</h1>
+    <table class="table">
+        <thead class="thead">
+            <tr>
+                <th>Spørsmål</th>
+                <th>Svar</th>
+                <th>Kategori</th>
+                <th>Person</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let question of allQuestions">
+            <tr *ngIf="question.Answer != null && question.Person != null">
                 <td>{{question.Quest}}</td>
                 <td>{{question.Answer}}</td>
                 <td>{{question.QuestionType.Type}}</td>
                 <td>{{question.Person.Firstname + " " + question.Person.Lastname}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h1 class="text-center">Ubesvarte brukerstilte spørsmål</h1>
+    <table class="table">
+        <thead class="thead">
+            <tr>
+                <th>Spørsmål</th>
+                <th>Svar</th>
+                <th>Kategori</th>
+                <th>Person</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let question of allQuestions">
+            <tr *ngIf="question.Answer == null && question.Person != null"> <!--Should have if edit mode then row should be inline edit mode-->
+                <td>{{question.Quest}}</td>
+                <td>Spørsmål er ikke besvart</td>
+                <td>{{question.QuestionType.Type}}</td>
+                <td>{{question.Person.Firstname + " " + question.Person.Lastname}}</td>
+                <td><button class="btn btn-danger">Besvar spørsmål</button></td> 
             </tr>
         </tbody>
     </table>
@@ -42,7 +84,7 @@
         <div class="form-group">
             <label>E-mail</label>
             <input class="form-control" formControlName="Email" />
-            <p class="alert alert-warning" [hidden]="form.controls.Lastname.valid || (form.controls.Email.pristine && !submitted)">
+            <p class="alert alert-warning" [hidden]="form.controls.Email.valid || (form.controls.Email.pristine && !submitted)">
                 Email er obligatorisk, og kan ikke inneholde spesialtegn som for eksempel (!"¤#$).
             </p>
         </div>
@@ -50,7 +92,7 @@
             <label>Spørsmål</label>
             <input class="form-control" formControlName="Question" />
             <p class="alert alert-warning" [hidden]="form.controls.Question.valid || (form.controls.Question.pristine && !submitted)">
-                Spørsmål må fylles inn, og må minst være to bokstaver.
+                Spørsmål må fylles inn, og Kan ikke inneholde spesialtegn tom (#¤$%). Spørsmål må også avslutte med '?'
             </p>
         </div>
         <div class="form-group">
@@ -59,7 +101,7 @@
                 <option *ngFor="let category of allQuestionTypes" [value]="category.ID">{{category.Type}}</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-success">Still spørsmål</button>
+        <button type="submit" class="btn btn-success" [disabled]="!form.valid">Still spørsmål</button>
         <button class="btn btn-warning" (click)="showQuestionForm()">Avbryt</button>
     </form>
 </div>

@@ -1,4 +1,4 @@
-﻿export class QuestionType {
+﻿export class QuestionCategory {
     ID: number;
     Type: string;
 }

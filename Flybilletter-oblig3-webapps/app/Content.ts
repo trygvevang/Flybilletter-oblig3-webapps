@@ -4,7 +4,8 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import "rxjs/add/operator/map";
 import {Headers} from "@angular/http";
 import { Question } from './Question';
-import { QuestionType } from './QuestionType';
+import { QuestionCategory } from './QuestionCategory';
+import { QuestionData } from './Question';
 import { Person } from './Person';
 
 @Component({
@@ -16,7 +17,7 @@ export class Content {
     showFAQ: boolean;
     submitQ: boolean;
     allQuestions: Array<Question>;
-    allQuestionTypes: Array<QuestionType>;
+    allQuestionTypes: Array<QuestionCategory>;
     form: FormGroup;
     loading: boolean;
 
@@ -25,8 +26,8 @@ export class Content {
             ID: [""],
             Firstname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
             Lastname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
-            Email: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9 -_.]+@[a-zA-Z]+.[a-zA-Z]{2,3}")])],
-            Question: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-ZøæåØÆÅ ]{2,}[?]$")])],
+            Email: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9 -_.]+@[a-zA-Z]+.[a-zA-Z]{2,3}$")])],
+            Question: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-ZøæåØÆÅ .]{2,}[?]$")])],
             QuestionType: [null, Validators.compose([Validators.required, Validators.pattern("[0,9]{1,2}")])]
         });
     }
@@ -51,6 +52,7 @@ export class Content {
                     for (let question of jsonData) {
                         this.allQuestions.push(question);
                     }
+                    console.log(this.allQuestions);
                     this.loading = false;
                 }
             },
@@ -58,7 +60,7 @@ export class Content {
     }
 
     getAllQuestionTypes() {
-        this._http.get("api/QuestionType")
+        this._http.get("api/QuestionCategory")
             .map(data => {
                 let jsonData = data.json();
                 return jsonData;
@@ -80,6 +82,7 @@ export class Content {
             ID: "",
             Firstname: "",
             Lastname: "",
+            Email: "",
             Question: "",
             QuestionType: ""
         });
@@ -92,13 +95,14 @@ export class Content {
         var person = new Person();
         person.Firstname = this.form.value.Firstname;
         person.Lastname = this.form.value.Lastname;
+        person.Email = this.form.value.Email;
         
         var questionType = this.form.value.QuestionType;
 
-        var question = new Question();
+        var question = new QuestionData();
         question.Quest = this.form.value.Question;
         question.Person = person;
-        question.QuestionType = questionType;
+        question.QuestionCategory = questionType;
 
         var body: string = JSON.stringify(question);
         var headers = new Headers({ "Content-Type": "application/json" });

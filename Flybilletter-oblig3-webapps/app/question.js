@@ -6,4 +6,10 @@ var Question = (function () {
     return Question;
 }());
 exports.Question = Question;
+var QuestionData = (function () {
+    function QuestionData() {
+    }
+    return QuestionData;
+}());
+exports.QuestionData = QuestionData;
 //# sourceMappingURL=Question.js.map

@@ -22,6 +22,6 @@ namespace Flybilletter_oblig3_webapps.Models
 
         public DbSet<Person> People { get; set; }
         public DbSet<Question> Questions { get; set; }
-        public DbSet<QuestionType> QuestTypes { get; set; }
+        public DbSet<QuestionCategory> Categories { get; set; }
     }
 }

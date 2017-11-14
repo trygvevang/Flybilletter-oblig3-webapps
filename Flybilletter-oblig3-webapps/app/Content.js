@@ -24,8 +24,8 @@ var Content = (function () {
             ID: [""],
             Firstname: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
             Lastname: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
-            Email: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-Z0-9 -_.]+@[a-zA-Z]+.[a-zA-Z]{2,3}")])],
-            Question: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-ZøæåØÆÅ ]{2,}[?]$")])],
+            Email: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-Z0-9 -_.]+@[a-zA-Z]+.[a-zA-Z]{2,3}$")])],
+            Question: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-ZøæåØÆÅ .]{2,}[?]$")])],
             QuestionType: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[0,9]{1,2}")])]
         });
     }
@@ -50,13 +50,14 @@ var Content = (function () {
                     var question = jsonData_1[_i];
                     _this.allQuestions.push(question);
                 }
+                console.log(_this.allQuestions);
                 _this.loading = false;
             }
         }, function (error) { return alert(error); }, function () { return console.log("All questions loaded (get-api/Question)."); });
     };
     Content.prototype.getAllQuestionTypes = function () {
         var _this = this;
-        this._http.get("api/QuestionType")
+        this._http.get("api/QuestionCategory")
             .map(function (data) {
             var jsonData = data.json();
             return jsonData;
@@ -77,6 +78,7 @@ var Content = (function () {
             ID: "",
             Firstname: "",
             Lastname: "",
+            Email: "",
             Question: "",
             QuestionType: ""
         });
@@ -89,11 +91,12 @@ var Content = (function () {
         var person = new Person_1.Person();
         person.Firstname = this.form.value.Firstname;
         person.Lastname = this.form.value.Lastname;
+        person.Email = this.form.value.Email;
         var questionType = this.form.value.QuestionType;
-        var question = new Question_1.Question();
+        var question = new Question_1.QuestionData();
         question.Quest = this.form.value.Question;
         question.Person = person;
-        question.QuestionType = questionType;
+        question.QuestionCategory = questionType;
         var body = JSON.stringify(question);
         var headers = new http_2.Headers({ "Content-Type": "application/json" });
         console.log(body);

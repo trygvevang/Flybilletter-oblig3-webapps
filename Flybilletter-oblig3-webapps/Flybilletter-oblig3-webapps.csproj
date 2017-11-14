@@ -119,7 +119,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
-    <Compile Include="Controllers\QuestionTypeController.cs" />
+    <Compile Include="Controllers\QuestionCategoryController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -146,11 +146,12 @@
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\Person.ts" />
     <TypeScriptCompile Include="app\Question.ts" />
-    <TypeScriptCompile Include="app\QuestionType.ts" />
+    <TypeScriptCompile Include="app\QuestionCategory.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
