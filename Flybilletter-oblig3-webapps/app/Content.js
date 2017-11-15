@@ -26,7 +26,7 @@ var Content = (function () {
             Lastname: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
             Email: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-Z0-9 -_.]+@[a-zA-Z]+.[a-zA-Z]{2,3}$")])],
             Question: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-ZøæåØÆÅ .]{2,}[?]$")])],
-            QuestionType: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[0,9]{1,2}")])]
+            Category: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[0,9]{1,2}")])]
         });
     }
     Content.prototype.ngOnInit = function () {
@@ -34,7 +34,7 @@ var Content = (function () {
         this.showFAQ = true;
         this.submitQ = false;
         this.getAll();
-        this.getAllQuestionTypes();
+        this.getAllCategories();
     };
     Content.prototype.getAll = function () {
         var _this = this;
@@ -55,7 +55,7 @@ var Content = (function () {
             }
         }, function (error) { return alert(error); }, function () { return console.log("All questions loaded (get-api/Question)."); });
     };
-    Content.prototype.getAllQuestionTypes = function () {
+    Content.prototype.getAllCategories = function () {
         var _this = this;
         this._http.get("api/QuestionCategory")
             .map(function (data) {
@@ -63,15 +63,15 @@ var Content = (function () {
             return jsonData;
         })
             .subscribe(function (jsonData) {
-            _this.allQuestionTypes = [];
+            _this.allCategories = [];
             if (jsonData) {
                 for (var _i = 0, jsonData_2 = jsonData; _i < jsonData_2.length; _i++) {
                     var questType = jsonData_2[_i];
-                    _this.allQuestionTypes.push(questType);
+                    _this.allCategories.push(questType);
                 }
                 _this.loading = false;
             }
-        }, function (error) { return alert(error); }, function () { return console.log("All questions loaded (get-api/QuestionType)."); });
+        }, function (error) { return alert(error); }, function () { return console.log("All questions loaded (get-api/QuestionCategory)."); });
     };
     Content.prototype.showQuestionForm = function () {
         this.form.setValue({
@@ -80,7 +80,7 @@ var Content = (function () {
             Lastname: "",
             Email: "",
             Question: "",
-            QuestionType: ""
+            Category: ""
         });
         this.form.markAsPristine();
         this.showFAQ = false;
@@ -92,11 +92,11 @@ var Content = (function () {
         person.Firstname = this.form.value.Firstname;
         person.Lastname = this.form.value.Lastname;
         person.Email = this.form.value.Email;
-        var questionType = this.form.value.QuestionType;
+        var category = this.form.value.Category;
         var question = new Question_1.QuestionData();
         question.Quest = this.form.value.Question;
         question.Person = person;
-        question.QuestionCategory = questionType;
+        question.Category = category;
         var body = JSON.stringify(question);
         var headers = new http_2.Headers({ "Content-Type": "application/json" });
         console.log(body);
@@ -104,7 +104,7 @@ var Content = (function () {
             .map(function (returData) { return returData.toString(); })
             .subscribe(function (retur) {
             _this.getAll();
-            _this.getAllQuestionTypes();
+            _this.getAllCategories();
             _this.submitQ = false;
             _this.showFAQ = true;
         }, function (error) { return alert(error); }, function () { return console.log("Question submitted (post-api/Question)"); });

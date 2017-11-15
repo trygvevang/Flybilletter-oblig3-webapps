@@ -10,9 +10,8 @@ export class Question {
 }
 
 export class QuestionData {
-    ID: number;
     Person: Person;
     Quest: string;
-    QuestionCategory: string;
+    Category: string;
     Answer: string;
 }

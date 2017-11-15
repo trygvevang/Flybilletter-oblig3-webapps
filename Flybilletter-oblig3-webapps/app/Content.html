@@ -8,15 +8,13 @@
                 <th>Spørsmål</th>
                 <th>Svar</th>
                 <th>Kategori</th>
-                <th>Person</th>
             </tr>
         </thead>
         <tbody *ngFor="let question of allQuestions">
-            <tr *ngIf="question.Answer != null"> <!--Should be question.Person == null-->
+            <tr *ngIf="question.Person == null"> <!--Should be question.Person == null-->
                 <td>{{question.Quest}}</td>
                 <td>{{question.Answer}}</td>
                 <td>{{question.Category.Type}}</td>
-                <td *ngIf="question.Person">{{question.Person.Firstname + " " + question.Person.Lastname}}</td>
             </tr>
         </tbody>
     </table>
@@ -97,11 +95,11 @@
         </div>
         <div class="form-group">
             <label>Kategori</label>
-            <select class="form-control" formControlName="QuestionType">
-                <option *ngFor="let category of allQuestionTypes" [value]="category.ID">{{category.Type}}</option>
+            <select class="form-control" formControlName="Category">
+                <option *ngFor="let category of allCategories" [value]="category.ID">{{category.Type}}</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-success" [disabled]="!form.valid">Still spørsmål</button>
+        <button type="submit" class="btn btn-success">Still spørsmål</button> <!--[disabled]="!form.valid"-->
         <button class="btn btn-warning" (click)="showQuestionForm()">Avbryt</button>
     </form>
 </div>

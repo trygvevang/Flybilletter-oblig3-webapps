@@ -17,7 +17,7 @@ export class Content {
     showFAQ: boolean;
     submitQ: boolean;
     allQuestions: Array<Question>;
-    allQuestionTypes: Array<QuestionCategory>;
+    allCategories: Array<QuestionCategory>;
     form: FormGroup;
     loading: boolean;
 
@@ -28,7 +28,7 @@ export class Content {
             Lastname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
             Email: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9 -_.]+@[a-zA-Z]+.[a-zA-Z]{2,3}$")])],
             Question: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-ZøæåØÆÅ .]{2,}[?]$")])],
-            QuestionType: [null, Validators.compose([Validators.required, Validators.pattern("[0,9]{1,2}")])]
+            Category: [null, Validators.compose([Validators.required, Validators.pattern("[0,9]{1,2}")])]
         });
     }
 
@@ -37,7 +37,7 @@ export class Content {
         this.showFAQ = true;
         this.submitQ = false;
         this.getAll();
-        this.getAllQuestionTypes();
+        this.getAllCategories();
     }
 
     getAll() {
@@ -59,22 +59,22 @@ export class Content {
             error => alert(error), () => console.log("All questions loaded (get-api/Question)."));
     }
 
-    getAllQuestionTypes() {
+    getAllCategories() {
         this._http.get("api/QuestionCategory")
             .map(data => {
                 let jsonData = data.json();
                 return jsonData;
             })
             .subscribe(jsonData => {
-                this.allQuestionTypes = [];
+                this.allCategories = [];
                 if (jsonData) {
                     for (let questType of jsonData) {
-                        this.allQuestionTypes.push(questType);
+                        this.allCategories.push(questType);
                     }
                     this.loading = false;
                 }
             },
-            error => alert(error), () => console.log("All questions loaded (get-api/QuestionType)."));
+            error => alert(error), () => console.log("All questions loaded (get-api/QuestionCategory)."));
     }
 
     showQuestionForm() {
@@ -84,7 +84,7 @@ export class Content {
             Lastname: "",
             Email: "",
             Question: "",
-            QuestionType: ""
+            Category: ""
         });
         this.form.markAsPristine();
         this.showFAQ = false;
@@ -97,12 +97,12 @@ export class Content {
         person.Lastname = this.form.value.Lastname;
         person.Email = this.form.value.Email;
         
-        var questionType = this.form.value.QuestionType;
+        var category = this.form.value.Category;
 
         var question = new QuestionData();
         question.Quest = this.form.value.Question;
         question.Person = person;
-        question.QuestionCategory = questionType;
+        question.Category = category;
 
         var body: string = JSON.stringify(question);
         var headers = new Headers({ "Content-Type": "application/json" });
@@ -113,7 +113,7 @@ export class Content {
             .subscribe(
             retur => {
                 this.getAll();
-                this.getAllQuestionTypes();
+                this.getAllCategories();
                 this.submitQ = false;
                 this.showFAQ = true;
             },

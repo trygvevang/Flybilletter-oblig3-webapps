@@ -130,6 +130,7 @@ namespace Flybilletter_oblig3_webapps.Models
                         var person = new Person();
                         person.Firstname = question.Person.Firstname;
                         person.Lastname = question.Person.Lastname;
+                        person.Email = question.Person.Email;
                         db.People.Add(person);
                         db.SaveChanges(); // Save changes for fetching person on the next line
                         questionObj.Person = db.People.Where(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)).FirstOrDefault();
