@@ -7,34 +7,12 @@
             <tr>
                 <th>Spørsmål</th>
                 <th>Svar</th>
-                <th>Kategori</th>
             </tr>
         </thead>
         <tbody *ngFor="let question of allQuestions">
             <tr *ngIf="question.Person == null"> <!--Should be question.Person == null-->
                 <td>{{question.Quest}}</td>
                 <td>{{question.Answer}}</td>
-                <td>{{question.Category.Type}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <hr />
-    <h1 class="text-center">Alle brukerstilte spørsmål</h1>
-    <table class="table">
-        <thead class="thead">
-            <tr>
-                <th>Spørsmål</th>
-                <th>Svar</th>
-                <th>Kategori</th>
-                <th>Person</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let question of allQuestions">
-            <tr *ngIf="question.Answer != null && question.Person != null">
-                <td>{{question.Quest}}</td>
-                <td>{{question.Answer}}</td>
-                <td>{{question.QuestionType.Type}}</td>
-                <td>{{question.Person.Firstname + " " + question.Person.Lastname}}</td>
             </tr>
         </tbody>
     </table>
@@ -45,7 +23,6 @@
             <tr>
                 <th>Spørsmål</th>
                 <th>Svar</th>
-                <th>Kategori</th>
                 <th>Person</th>
                 <th></th>
             </tr>
@@ -54,7 +31,6 @@
             <tr *ngIf="question.Answer == null && question.Person != null"> <!--Should have if edit mode then row should be inline edit mode-->
                 <td>{{question.Quest}}</td>
                 <td>Spørsmål er ikke besvart</td>
-                <td>{{question.QuestionType.Type}}</td>
                 <td>{{question.Person.Firstname + " " + question.Person.Lastname}}</td>
                 <td><button class="btn btn-danger" (click)="answerQuestion()">Besvar spørsmål</button></td> 
             </tr>

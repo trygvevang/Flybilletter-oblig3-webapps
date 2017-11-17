@@ -52,21 +52,18 @@ namespace Flybilletter_oblig3_webapps.Models
             {
                 Person = null,
                 Quest = "Hvordan kan jeg betale?",
-                Category = betaling,
                 Answer = "Etter å velge flygninger, og registrere kundedata, blir du promptet betalingsvinduet."
             };
             var sp_2 = new Question()
             {
                 Person = null,
                 Quest = "Hvordan kan jeg avbestille?",
-                Category = avbestilling,
                 Answer = "Dersom det er under 48 timer siden bestilling kan en avbestille ved å gå inn på bestillinger og deretter trykke på Avbestill-knappen. Hvis det er over 48 timer siden bestilling fant sted, er det kun administrator som kan avbestille."
             };
             var sp_3 = new Question()
             {
                 Person = null,
                 Quest = "Kan man fly trygt mens man er forkjølet?",
-                Category = sykdom,
                 Answer = "Ja, for din del gjør det ingenting. Derimot må du tenke på alle andre reisende som du kan smitte."
             };
 

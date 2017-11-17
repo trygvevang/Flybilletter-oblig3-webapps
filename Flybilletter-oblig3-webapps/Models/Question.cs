@@ -13,8 +13,6 @@ namespace Flybilletter_oblig3_webapps.Models
         public Person Person { get; set; }
         [Required]
         public string Quest { get; set; }
-        [Required]
-        public QuestionCategory Category { get; set; }
         public string Answer { get; set; } // If answer == null then it is not answered
     }
 
@@ -40,6 +38,7 @@ namespace Flybilletter_oblig3_webapps.Models
         [Key]
         public int ID { get; set; }
         public string Type { get; set; }
+        public List<Question> Questions { get; set; }
     }
 
     public static class CRUD
@@ -50,7 +49,7 @@ namespace Flybilletter_oblig3_webapps.Models
             {
                 try
                 {
-                    return db.Questions.Include("Person").Include("Category").ToList();
+                    return db.Questions.Include("Person").ToList();
                 }
                 catch (Exception e)
                 {
@@ -68,7 +67,7 @@ namespace Flybilletter_oblig3_webapps.Models
                 {
                     try
                     {
-                        return db.Questions.Include("Person").Include("QuestionCategory").Where(k => k.ID == ID).FirstOrDefault();
+                        return db.Questions.Include("Person").Where(k => k.ID == ID).FirstOrDefault();
                     }
                     catch (Exception e)
                     {
@@ -85,7 +84,7 @@ namespace Flybilletter_oblig3_webapps.Models
             {
                 try
                 {
-                    return db.Categories.ToList();
+                    return db.Categories.Include("Questions").ToList();
                 }
                 catch (Exception e)
                 {
@@ -95,7 +94,7 @@ namespace Flybilletter_oblig3_webapps.Models
             return null;
         }
 
-        public static Question GetSingleQuestionType(int ID)
+        public static QuestionCategory GetSingleQuestionCategory(int ID)
         {
             if (ID >= 0)
             {
@@ -103,7 +102,7 @@ namespace Flybilletter_oblig3_webapps.Models
                 {
                     try
                     {
-                        return db.Questions.Where(k => k.ID == ID).FirstOrDefault();
+                        return db.Categories.Include("Questions").Where(k => k.ID == ID).FirstOrDefault();
                     }
                     catch (Exception e)
                     {
@@ -133,11 +132,16 @@ namespace Flybilletter_oblig3_webapps.Models
                         person.Email = question.Person.Email;
                         db.People.Add(person);
                         db.SaveChanges(); // Save changes for fetching person on the next line
-                        questionObj.Person = db.People.Where(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)).FirstOrDefault();
                     }
+                    questionObj.Person = db.People.Where(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)).FirstOrDefault();
                     
-                    questionObj.Category = db.Categories.Where(q => q.ID == question.Category).FirstOrDefault();
                     db.Questions.Add(questionObj);
+                    db.SaveChanges(); // Save changes before retrieving the question
+                    questionObj = db.Questions.Where(q => q.Quest.Equals(question.Quest)).FirstOrDefault();
+                    var categoryObj = db.Categories.Where(q => q.ID == question.Category).FirstOrDefault();
+                    if (categoryObj.Questions == null)
+                        categoryObj.Questions = new List<Question>();
+                    categoryObj.Questions.Add(questionObj);
                     db.SaveChanges();
                     return true;
                 }

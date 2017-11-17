@@ -27,11 +27,8 @@ namespace Flybilletter_oblig3_webapps.Controllers
             };
         }
         /*
-            Perhaps I should break Question up in two sub-categories (abstract class): User-asked question and FAQ. 
             Do something with QuestionCategory so admin is warned that there's a lot of questions in category, perhaps create a new FAQ.
             Kanskje også bruke ajax i web-app til å gjøre den mer dynamisk?
-
-            E-post på person som stiller spørsmål
         */
         // GET api/Question/5
         public HttpResponseMessage Get(int ID)
