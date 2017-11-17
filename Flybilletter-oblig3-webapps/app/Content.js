@@ -109,6 +109,9 @@ var Content = (function () {
             _this.showFAQ = true;
         }, function (error) { return alert(error); }, function () { return console.log("Question submitted (post-api/Question)"); });
     };
+    Content.prototype.answerQuestion = function () {
+        // TODO: answer question
+    };
     return Content;
 }());
 Content = __decorate([

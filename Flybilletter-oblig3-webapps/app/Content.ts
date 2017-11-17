@@ -121,4 +121,8 @@ export class Content {
             () => console.log("Question submitted (post-api/Question)")
             );
     }
+
+    answerQuestion() {
+        // TODO: answer question
+    }
 }

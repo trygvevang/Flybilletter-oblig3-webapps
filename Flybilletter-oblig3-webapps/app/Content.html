@@ -56,7 +56,7 @@
                 <td>Spørsmål er ikke besvart</td>
                 <td>{{question.QuestionType.Type}}</td>
                 <td>{{question.Person.Firstname + " " + question.Person.Lastname}}</td>
-                <td><button class="btn btn-danger">Besvar spørsmål</button></td> 
+                <td><button class="btn btn-danger" (click)="answerQuestion()">Besvar spørsmål</button></td> 
             </tr>
         </tbody>
     </table>
