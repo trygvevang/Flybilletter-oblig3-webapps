@@ -153,6 +153,27 @@ namespace Flybilletter_oblig3_webapps.Models
             return false;
         }
 
+        public static bool AnswerQuestion(int ID, Question question)
+        {
+            using (var db = new DB())
+            {
+                try
+                {
+                    var foundQuestion = db.Questions.FirstOrDefault(q => q.ID == ID);
+                    if (foundQuestion == null || question == null) return false;
+
+                    foundQuestion.Answer = question.Answer;
+                    db.SaveChanges();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    // TODO: Handle exception
+                    return false;
+                }
+            }
+        }
+
         public static bool AddPerson(Person person)
         {
             using (var db = new DB())

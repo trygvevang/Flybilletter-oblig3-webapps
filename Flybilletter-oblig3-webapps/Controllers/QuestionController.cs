@@ -64,5 +64,27 @@ namespace Flybilletter_oblig3_webapps.Controllers
                 Content = new StringContent("Could not add question to the database.")
             };
         }
+
+        // PUT api/Kunde/5
+        public HttpResponseMessage Put(int id, [FromBody]Question question)
+        {
+            if (ModelState.IsValid)
+            {
+                bool OK = CRUD.AnswerQuestion(id, question);
+                if (OK)
+                {
+                    return new HttpResponseMessage()
+                    {
+                        StatusCode = HttpStatusCode.OK
+                    };
+                }
+            }
+            return new HttpResponseMessage()
+            {
+                StatusCode = HttpStatusCode.NotFound,
+                Content = new StringContent("Could not update question data in the database.")
+            };
+
+        }
     }
 }

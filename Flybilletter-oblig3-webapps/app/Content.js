@@ -15,6 +15,7 @@ var forms_1 = require("@angular/forms");
 require("rxjs/add/operator/map");
 var http_2 = require("@angular/http");
 var Question_1 = require("./Question");
+var Question_2 = require("./Question");
 var Person_1 = require("./Person");
 var Content = (function () {
     function Content(_http, fb) {
@@ -28,11 +29,15 @@ var Content = (function () {
             Question: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-ZøæåØÆÅ .]{2,}[?]$")])],
             Category: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[0,9]{1,2}")])]
         });
+        this.answerForm = new forms_1.FormGroup({
+            Answer: new forms_1.FormControl([null, forms_1.Validators.compose([forms_1.Validators.required])])
+        });
     }
     Content.prototype.ngOnInit = function () {
         this.loading = true;
         this.showFAQ = true;
         this.submitQ = false;
+        this.isAnsweringQuestion = false;
         this.getAll();
         this.getAllCategories();
     };
@@ -50,7 +55,6 @@ var Content = (function () {
                     var question = jsonData_1[_i];
                     _this.allQuestions.push(question);
                 }
-                console.log(_this.allQuestions);
                 _this.loading = false;
             }
         }, function (error) { return alert(error); }, function () { return console.log("All questions loaded (get-api/Question)."); });
@@ -93,7 +97,7 @@ var Content = (function () {
         person.Lastname = this.form.value.Lastname;
         person.Email = this.form.value.Email;
         var category = this.form.value.Category;
-        var question = new Question_1.QuestionData();
+        var question = new Question_2.QuestionData();
         question.Quest = this.form.value.Question;
         question.Person = person;
         question.Category = category;
@@ -109,8 +113,38 @@ var Content = (function () {
             _this.showFAQ = true;
         }, function (error) { return alert(error); }, function () { return console.log("Question submitted (post-api/Question)"); });
     };
-    Content.prototype.answerQuestion = function () {
-        // TODO: answer question
+    Content.prototype.showAnswerQForm = function () {
+        this.answerForm.setValue({
+            Answer: ""
+        });
+        this.answerForm.markAsPristine();
+        this.isAnsweringQuestion = true;
+    };
+    /**
+     * Thought: Use an unsorted list in html to display questions with relevant data
+     * Could expand ul when clicked, and when other ul is clicked first one collapses
+     */
+    Content.prototype.answerQuestion = function (question) {
+        var _this = this;
+        this.isAnsweringQuestion = false; // Changing from one mode to another.
+        var changedQuestion = new Question_1.Question();
+        changedQuestion.ID = question.ID;
+        changedQuestion.Person = question.Person;
+        changedQuestion.Quest = question.Quest;
+        changedQuestion.Answer = this.answerForm.value.Answer;
+        var body = JSON.stringify(changedQuestion);
+        var headers = new http_2.Headers({ "Content-Type": "application/json" });
+        this._http.put("api/Question/" + question.ID, body, { headers: headers })
+            .map(function (returData) { return returData.toString(); })
+            .subscribe(function (retur) {
+            _this.getAll();
+            _this.getAllCategories();
+            _this.submitQ = false;
+            _this.showFAQ = true;
+        }, function (error) { return alert(error); }, function () { return console.log("Question answered (post-api/Question)"); });
+        this.answerForm.setValue({
+            Answer: ""
+        });
     };
     return Content;
 }());

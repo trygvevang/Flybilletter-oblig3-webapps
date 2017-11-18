@@ -22,7 +22,6 @@
         <thead class="thead">
             <tr>
                 <th>Spørsmål</th>
-                <th>Svar</th>
                 <th>Person</th>
                 <th></th>
             </tr>
@@ -30,9 +29,14 @@
         <tbody *ngFor="let question of allQuestions">
             <tr *ngIf="question.Answer == null && question.Person != null"> <!--Should have if edit mode then row should be inline edit mode-->
                 <td>{{question.Quest}}</td>
-                <td>Spørsmål er ikke besvart</td>
                 <td>{{question.Person.Firstname + " " + question.Person.Lastname}}</td>
-                <td><button class="btn btn-danger" (click)="answerQuestion()">Besvar spørsmål</button></td> 
+                <td *ngIf="!isAnsweringQuestion"><button class="btn btn-danger btn-xs" (click)="showAnswerQForm()">Besvar spørsmål</button></td>
+                <td *ngIf="isAnsweringQuestion">
+                    <form [formGroup]="answerForm" (ngSubmit)="answerQuestion(question)">
+                        <input type="text" formControlName="Answer" />
+                        <button type="submit" class="btn btn-success btn-xs">Besvar</button> <!--[disabled]="!form.valid"-->
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>

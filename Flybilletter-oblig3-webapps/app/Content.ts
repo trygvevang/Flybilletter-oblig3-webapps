@@ -19,7 +19,9 @@ export class Content {
     allQuestions: Array<Question>;
     allCategories: Array<QuestionCategory>;
     form: FormGroup;
+    answerForm: FormGroup;
     loading: boolean;
+    isAnsweringQuestion: boolean;
 
     constructor(private _http: Http, private fb: FormBuilder) {
         this.form = fb.group({
@@ -30,12 +32,16 @@ export class Content {
             Question: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-ZøæåØÆÅ .]{2,}[?]$")])],
             Category: [null, Validators.compose([Validators.required, Validators.pattern("[0,9]{1,2}")])]
         });
+        this.answerForm = new FormGroup({
+            Answer: new FormControl([null, Validators.compose([Validators.required])])
+        });
     }
 
     ngOnInit() {
         this.loading = true;
         this.showFAQ = true;
         this.submitQ = false;
+        this.isAnsweringQuestion = false;
         this.getAll();
         this.getAllCategories();
     }
@@ -52,7 +58,6 @@ export class Content {
                     for (let question of jsonData) {
                         this.allQuestions.push(question);
                     }
-                    console.log(this.allQuestions);
                     this.loading = false;
                 }
             },
@@ -122,7 +127,45 @@ export class Content {
             );
     }
 
-    answerQuestion() {
-        // TODO: answer question
+    showAnswerQForm() {
+        this.answerForm.setValue({ // Reseting form just in case there were some changes there before.
+            Answer: ""
+        });
+        this.answerForm.markAsPristine();
+        this.isAnsweringQuestion = true;
+    }
+
+    /**
+     * Thought: Use an unsorted list in html to display questions with relevant data
+     * Could expand ul when clicked, and when other ul is clicked first one collapses
+     */
+    answerQuestion(question:Question) {
+        this.isAnsweringQuestion = false; // Changing from one mode to another.
+
+        var changedQuestion = new Question();
+        changedQuestion.ID = question.ID;
+        changedQuestion.Person = question.Person;
+        changedQuestion.Quest = question.Quest;
+        changedQuestion.Answer = this.answerForm.value.Answer;
+
+        var body: string = JSON.stringify(changedQuestion);
+        var headers = new Headers({ "Content-Type": "application/json" });
+
+        this._http.put("api/Question/" + question.ID, body, { headers: headers })
+            .map(returData => returData.toString())
+            .subscribe(
+            retur => {
+                this.getAll();
+                this.getAllCategories();
+                this.submitQ = false;
+                this.showFAQ = true;
+            },
+            error => alert(error),
+            () => console.log("Question answered (post-api/Question)")
+        );
+
+        this.answerForm.setValue({ // Reseting 
+            Answer: ""
+        });
     }
 }
