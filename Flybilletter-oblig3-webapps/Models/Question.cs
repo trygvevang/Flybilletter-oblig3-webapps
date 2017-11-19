@@ -67,7 +67,7 @@ namespace Flybilletter_oblig3_webapps.Models
                 {
                     try
                     {
-                        return db.Questions.Include("Person").Where(k => k.ID == ID).FirstOrDefault();
+                        return db.Questions.Include("Person").FirstOrDefault(k => k.ID == ID);
                     }
                     catch (Exception e)
                     {
@@ -102,7 +102,7 @@ namespace Flybilletter_oblig3_webapps.Models
                 {
                     try
                     {
-                        return db.Categories.Include("Questions").Where(k => k.ID == ID).FirstOrDefault();
+                        return db.Categories.Include("Questions").FirstOrDefault(k => k.ID == ID);
                     }
                     catch (Exception e)
                     {
@@ -123,7 +123,7 @@ namespace Flybilletter_oblig3_webapps.Models
                     var questionObj = new Question();
                     questionObj.Quest = question.Quest;
                 
-                    bool personExists = db.People.Where(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)).FirstOrDefault() != null;
+                    bool personExists = db.People.FirstOrDefault(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)) != null;
                     if (!personExists)
                     {
                         var person = new Person();
@@ -133,12 +133,12 @@ namespace Flybilletter_oblig3_webapps.Models
                         db.People.Add(person);
                         db.SaveChanges(); // Save changes for fetching person on the next line
                     }
-                    questionObj.Person = db.People.Where(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname)).FirstOrDefault();
+                    questionObj.Person = db.People.FirstOrDefault(p => p.Firstname.Equals(question.Person.Firstname) && p.Lastname.Equals(question.Person.Lastname));
                     
                     db.Questions.Add(questionObj);
                     db.SaveChanges(); // Save changes before retrieving the question
-                    questionObj = db.Questions.Where(q => q.Quest.Equals(question.Quest)).FirstOrDefault();
-                    var categoryObj = db.Categories.Where(q => q.ID == question.Category).FirstOrDefault();
+                    questionObj = db.Questions.FirstOrDefault(q => q.Quest.Equals(question.Quest));
+                    var categoryObj = db.Categories.FirstOrDefault(q => q.ID == question.Category);
                     if (categoryObj.Questions == null)
                         categoryObj.Questions = new List<Question>();
                     categoryObj.Questions.Add(questionObj);
@@ -214,7 +214,7 @@ namespace Flybilletter_oblig3_webapps.Models
             {
                 try
                 {
-                    return db.People.Where(p => p.Firstname == Firstname && p.Lastname == Lastname).FirstOrDefault();
+                    return db.People.FirstOrDefault(p => p.Firstname == Firstname && p.Lastname == Lastname);
                 }
                 catch (Exception e)
                 {
