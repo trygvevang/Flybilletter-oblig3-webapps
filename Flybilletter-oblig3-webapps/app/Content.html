@@ -16,8 +16,8 @@
                     <div *ngFor="let question of category.Questions">
                         <a data-toggle="collapse" href="#{{category.ID + '_' + question.ID + '_ul'}}">{{question.Quest}}</a>
                         <div class="panel-collapse collapse" id="{{category.ID + '_' + question.ID + '_ul'}}">
-                            <div *ngIf="question.Person">Stilt av: {{question.Person}}</div>
-                            <div *ngIf="question.Answer">Svar: {{question.Answer}}</div>
+                            <div *ngIf="(question.Person | json) != '{}'">Stilt av: {{question.Person}}</div>
+                            <div *ngIf="(question.Answer | json) != '{}'">Svar: {{question.Answer}}</div>
                             <div *ngIf="!question.Answer">
                                 <button *ngIf="!isAnsweringQuestion" class="btn btn-danger btn-xs" (click)="showAnswerQForm()">Besvar spørsmål</button>
                                 <form *ngIf="isAnsweringQuestion" [formGroup]="answerForm" (ngSubmit)="answerQuestion(question)">
