@@ -84,7 +84,7 @@ namespace Flybilletter_oblig3_webapps.Models
             {
                 try
                 {
-                    return db.Categories.Include("Questions").ToList();
+                    return db.Categories.Include("Questions.Person").ToList();
                 }
                 catch (Exception e)
                 {

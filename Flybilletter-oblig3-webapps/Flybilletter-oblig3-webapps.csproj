@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\Content.html" />
+    <Content Include="app\layout.css" />
     <Content Include="App_Data\QuestionsDatabase.mdf" />
     <Content Include="App_Data\QuestionsDatabase_log.ldf" />
     <Content Include="Content\bootstrap-theme.css" />
