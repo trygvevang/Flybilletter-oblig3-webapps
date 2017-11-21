@@ -38,7 +38,6 @@ var Content = (function () {
         this.showFAQ = true;
         this.submitQ = false;
         this.isAnsweringQuestion = false;
-        this.getAll();
         this.getAllCategories();
     };
     Content.prototype.getAll = function () {
@@ -112,6 +111,7 @@ var Content = (function () {
             _this.submitQ = false;
             _this.showFAQ = true;
         }, function (error) { return alert(error); }, function () { return console.log("Question submitted (post-api/Question)"); });
+        this.getAllCategories();
     };
     Content.prototype.showAnswerQForm = function () {
         this.answerForm.setValue({
@@ -145,6 +145,7 @@ var Content = (function () {
         this.answerForm.setValue({
             Answer: ""
         });
+        this.getAllCategories();
     };
     return Content;
 }());

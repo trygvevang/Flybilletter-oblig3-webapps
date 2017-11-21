@@ -42,7 +42,6 @@ export class Content {
         this.showFAQ = true;
         this.submitQ = false;
         this.isAnsweringQuestion = false;
-        this.getAll();
         this.getAllCategories();
     }
 
@@ -124,7 +123,8 @@ export class Content {
             },
             error => alert(error),
             () => console.log("Question submitted (post-api/Question)")
-            );
+        );
+        this.getAllCategories();
     }
 
     showAnswerQForm() {
@@ -167,5 +167,7 @@ export class Content {
         this.answerForm.setValue({ // Reseting 
             Answer: ""
         });
+
+        this.getAllCategories();
     }
 }

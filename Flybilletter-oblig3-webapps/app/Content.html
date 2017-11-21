@@ -1,45 +1,34 @@
 <div *ngIf="showFAQ" class="col-md-8 col-md-offset-2"> <!--Show faq *ngIf="showFAQ" -->
-    <a class="btn btn-primary" (click)="showQuestionForm()">Still spørsmål</a>
     <h1 class="text-center">FAQ</h1>
     <div *ngIf="loading">Laster spørsmål...</div>
-    <table class="table">
-        <thead class="thead">
-            <tr>
-                <th>Spørsmål</th>
-                <th>Svar</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let question of allQuestions">
-            <tr *ngIf="question.Person == null"> <!--Should be question.Person == null-->
-                <td>{{question.Quest}}</td>
-                <td>{{question.Answer}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <hr />
-    <h1 class="text-center">Ubesvarte brukerstilte spørsmål</h1>
-    <table class="table">
-        <thead class="thead">
-            <tr>
-                <th>Spørsmål</th>
-                <th>Person</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let question of allQuestions">
-            <tr *ngIf="question.Answer == null && question.Person != null"> <!--Should have if edit mode then row should be inline edit mode-->
-                <td>{{question.Quest}}</td>
-                <td>{{question.Person.Firstname + " " + question.Person.Lastname}}</td>
-                <td *ngIf="!isAnsweringQuestion"><button class="btn btn-danger btn-xs" (click)="showAnswerQForm()">Besvar spørsmål</button></td>
-                <td *ngIf="isAnsweringQuestion">
-                    <form [formGroup]="answerForm" (ngSubmit)="answerQuestion(question)">
-                        <input type="text" formControlName="Answer" />
-                        <button type="submit" class="btn btn-success btn-xs">Besvar</button> <!--[disabled]="!form.valid"-->
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+   
+    <div class="list-group">
+        <div class="list-group-item row_div_parent" *ngFor="let category of allCategories">
+            <a data-toggle="collapse" href="#{{category.ID + '_ul'}}"><h4 class="panel-title">{{category.Type}}</h4></a>
+            <div class="collapse" id="{{category.ID + '_ul'}}">
+                <h4 *ngIf="category.Questions?.length == 0" class="panel-title">Det er ingen spørsmål i kategorien enda.</h4>
+                <div *ngIf="category.Questions?.length > 0">
+
+                    <div *ngFor="let question of category.Questions" class="row_div_child">
+                        <a data-toggle="collapse" href="#{{category.ID + '_' + question.ID + '_ul'}}">{{question.Quest}}</a>
+                        <div class="panel-collapse collapse" id="{{category.ID + '_' + question.ID + '_ul'}}">
+                            <div *ngIf="question.Person">Stilt av: {{question.Person.Firstname + " " + question.Person.Lastname}}, {{question.Person.Email}}</div>
+                            <div *ngIf="question.Answer">Svar: {{question.Answer}}</div>
+                            <div *ngIf="!question.Answer">
+                                <button *ngIf="!isAnsweringQuestion" class="btn btn-danger btn-xs" (click)="showAnswerQForm()">Besvar spørsmål</button>
+                                <form *ngIf="isAnsweringQuestion" [formGroup]="answerForm" (ngSubmit)="answerQuestion(question)">
+                                    <input type="text" formControlName="Answer" />
+                                    <button type="submit" class="btn btn-success btn-xs">Besvar</button> <!--[disabled]="!form.valid"-->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="btn btn-primary" (click)="showQuestionForm()">Still spørsmål</a>
 </div>
 
 <div *ngIf="submitQ" class="col-md-8 col-md-offset-2"> <!--Submit new question *ngIf="submitQ" -->
