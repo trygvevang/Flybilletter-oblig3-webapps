@@ -1,20 +1,30 @@
-<div *ngIf="showFAQ" class="col-md-8 col-md-offset-2"> <!--Show faq *ngIf="showFAQ" -->
-    <h1 class="text-center">FAQ</h1>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <h2 class="navbar_text">LuftKlar Kundeservice</h2>
+        </div>
+    </div>
+</div>
+<br /><br /><br />
+<div *ngIf="showFAQ" class="col-md-8 col-md-offset-2 body-content"> <!--Show faq *ngIf="showFAQ" -->
+    <h1 class="text-center">Hvordan kan vi hjelpe?</h1>
     <div *ngIf="loading">Laster spørsmål...</div>
    
     <div class="list-group">
         <div class="list-group-item row_div_parent" *ngFor="let category of allCategories">
             <a data-toggle="collapse" href="#{{category.ID + '_ul'}}"><h4 class="panel-title">{{category.Type}}</h4></a>
+            <br />
             <div class="collapse" id="{{category.ID + '_ul'}}">
                 <h4 *ngIf="category.Questions?.length == 0" class="panel-title">Det er ingen spørsmål i kategorien enda.</h4>
                 <div *ngIf="category.Questions?.length > 0">
-
+                    <h4 class="panel-title">Tidligere stilte spørsmål</h4>
                     <div *ngFor="let question of category.Questions" class="row_div_child">
                         <a data-toggle="collapse" href="#{{category.ID + '_' + question.ID + '_ul'}}">{{question.Quest}}</a>
                         <div class="panel-collapse collapse" id="{{category.ID + '_' + question.ID + '_ul'}}">
-                            <div *ngIf="question.Person">Stilt av: {{question.Person.Firstname + " " + question.Person.Lastname}}, {{question.Person.Email}}</div>
+                            <div *ngIf="question.Person && !question.Answer">Stilt av: {{question.Person.Firstname + " " + question.Person.Lastname}}, {{question.Person.Email}}</div> <!--Only show personal info if question is user-question, and is not yet answered-->
                             <div *ngIf="question.Answer">Svar: {{question.Answer}}</div>
                             <div *ngIf="!question.Answer">
+                                <div *ngIf="!isAnsweringQuestion">Spørsmål er ikke besvart enda.</div>
                                 <button *ngIf="!isAnsweringQuestion" class="btn btn-danger btn-xs" (click)="showAnswerQForm()">Besvar spørsmål</button>
                                 <form *ngIf="isAnsweringQuestion" [formGroup]="answerForm" (ngSubmit)="answerQuestion(question)">
                                     <input type="text" formControlName="Answer" />
@@ -23,15 +33,17 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+                <hr />
+                <h4 class="panel-title">Finner du ikke det du leter etter?</h4>
+                <a class="btn btn-primary" (click)="showQuestionForm()">Still spørsmål</a>
             </div>
         </div>
     </div>
-    <a class="btn btn-primary" (click)="showQuestionForm()">Still spørsmål</a>
 </div>
 
 <div *ngIf="submitQ" class="col-md-8 col-md-offset-2"> <!--Submit new question *ngIf="submitQ" -->
+    <h1 class="text-center">Still spørsmål: </h1>
     <form [formGroup]="form" (ngSubmit)="submitQuestion()">
         <input class="form-control" formControlName="ID" type="hidden" />
         <div class="form-group">
