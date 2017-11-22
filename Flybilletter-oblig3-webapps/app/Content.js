@@ -37,6 +37,7 @@ var Content = (function () {
         this.loading = true;
         this.showFAQ = true;
         this.submitQ = false;
+        this.showUnansweredUserQuestion = false;
         this.isAnsweringQuestion = false;
         this.getAllCategories();
     };
@@ -76,7 +77,7 @@ var Content = (function () {
             }
         }, function (error) { return alert(error); }, function () { return console.log("All questions loaded (get-api/QuestionCategory)."); });
     };
-    Content.prototype.showQuestionForm = function () {
+    Content.prototype.resetQuestionForm = function () {
         this.form.setValue({
             ID: "",
             Firstname: "",
@@ -85,9 +86,24 @@ var Content = (function () {
             Question: "",
             Category: ""
         });
+    };
+    Content.prototype.showQuestionForm = function () {
+        this.resetQuestionForm();
         this.form.markAsPristine();
         this.showFAQ = false;
         this.submitQ = true;
+        this.showUnansweredUserQuestion = false;
+    };
+    Content.prototype.showUnanswered = function () {
+        this.showUnansweredUserQuestion = true;
+        this.showFAQ = false;
+        this.submitQ = false;
+    };
+    Content.prototype.showFaq = function () {
+        this.resetQuestionForm(); // In case user have input data in form
+        this.showFAQ = true;
+        this.showUnansweredUserQuestion = false;
+        this.submitQ = false;
     };
     Content.prototype.submitQuestion = function () {
         var _this = this;
@@ -139,8 +155,6 @@ var Content = (function () {
             .subscribe(function (retur) {
             _this.getAll();
             _this.getAllCategories();
-            _this.submitQ = false;
-            _this.showFAQ = true;
         }, function (error) { return alert(error); }, function () { return console.log("Question answered (post-api/Question)"); });
         this.answerForm.setValue({
             Answer: ""

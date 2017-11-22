@@ -15,6 +15,7 @@ import { Person } from './Person';
 
 export class Content {
     showFAQ: boolean;
+    showUnansweredUserQuestion: boolean;
     submitQ: boolean;
     allQuestions: Array<Question>;
     allCategories: Array<QuestionCategory>;
@@ -41,6 +42,7 @@ export class Content {
         this.loading = true;
         this.showFAQ = true;
         this.submitQ = false;
+        this.showUnansweredUserQuestion = false;
         this.isAnsweringQuestion = false;
         this.getAllCategories();
     }
@@ -81,7 +83,7 @@ export class Content {
             error => alert(error), () => console.log("All questions loaded (get-api/QuestionCategory)."));
     }
 
-    showQuestionForm() {
+    resetQuestionForm() {
         this.form.setValue({ // Reseting form just in case there were some changes there before.
             ID: "",
             Firstname: "",
@@ -90,9 +92,27 @@ export class Content {
             Question: "",
             Category: ""
         });
+    }
+
+    showQuestionForm() {
+        this.resetQuestionForm();
         this.form.markAsPristine();
         this.showFAQ = false;
         this.submitQ = true;
+        this.showUnansweredUserQuestion = false;
+    }
+
+    showUnanswered() {
+        this.showUnansweredUserQuestion = true;
+        this.showFAQ = false;
+        this.submitQ = false;
+    }
+
+    showFaq() {
+        this.resetQuestionForm(); // In case user have input data in form
+        this.showFAQ = true;
+        this.showUnansweredUserQuestion = false;
+        this.submitQ = false;
     }
 
     submitQuestion() {
@@ -157,8 +177,6 @@ export class Content {
             retur => {
                 this.getAll();
                 this.getAllCategories();
-                this.submitQ = false;
-                this.showFAQ = true;
             },
             error => alert(error),
             () => console.log("Question answered (post-api/Question)")
