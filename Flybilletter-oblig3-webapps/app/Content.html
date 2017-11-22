@@ -6,7 +6,7 @@
     </div>
 </div>
 <br /><br /><br />
-<div *ngIf="showFAQ" class="col-md-8 col-md-offset-2 body-content"> <!--Show faq *ngIf="showFAQ" -->
+<div *ngIf="showFAQ" class="col-md-8 col-md-offset-2 body-content"> <!-- "Hjem" -->
     <h1 class="text-center">Hvordan kan vi hjelpe?</h1>
     <div *ngIf="loading">Laster spørsmål...</div>
    
@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<div *ngIf="submitQ" class="col-md-8 col-md-offset-2"> <!--Submit new question *ngIf="submitQ" -->
+<div *ngIf="submitQ" class="col-md-8 col-md-offset-2"> <!-- "Submit" -->
     <h1 class="text-center">Still spørsmål: </h1>
     <form [formGroup]="form" (ngSubmit)="submitQuestion()">
         <input class="form-control" formControlName="ID" type="hidden" />
@@ -75,7 +75,8 @@
     </form>
     <br />
 </div>
-<div *ngIf="showUnansweredUserQuestion" class="col-md-8 col-md-offset-2 body-content">
+
+<div *ngIf="showUnansweredUserQuestion" class="col-md-8 col-md-offset-2 body-content"> <!-- "Ubesvarte spørsmål" -->
     <h1 class="text-center">Ubesvarte brukerspørsmål</h1>
 
     <div class="list-group">
