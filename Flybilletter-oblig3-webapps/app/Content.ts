@@ -30,11 +30,11 @@ export class Content {
             Firstname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
             Lastname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
             Email: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9 -_.]+@[a-zA-Z]+.[a-zA-Z]{2,3}$")])],
-            Question: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-ZøæåØÆÅ .0-9]{2,}[?]$")])],
-            Category: [null, Validators.compose([Validators.required, Validators.pattern("[0,9]{1,2}")])]
+            Question: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-ZøæåØÆÅ .,0-9]{2,}[?]$")])],
+            Category: [null, Validators.compose([Validators.required, Validators.pattern("^[0-9]{1,2}$")])]
         });
         this.answerForm = new FormGroup({
-            Answer: new FormControl([null, Validators.compose([Validators.required])])
+            Answer: new FormControl([null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9øæåØÆÅ .,!-]{2,}$")])])
         });
     }
 

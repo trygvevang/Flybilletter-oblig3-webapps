@@ -71,7 +71,7 @@
                 <option *ngFor="let category of allCategories" [value]="category.ID">{{category.Type}}</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-success">Still spørsmål</button> <!--[disabled]="!form.valid"-->
+        <button type="submit" class="btn btn-success" [disabled]="!form.valid">Still spørsmål</button>
     </form>
     <br />
 </div>
@@ -94,6 +94,9 @@
                                 <button *ngIf="!isAnsweringQuestion" class="btn btn-danger btn-xs" (click)="showAnswerQForm()">Besvar spørsmål</button>
                                 <form *ngIf="isAnsweringQuestion" [formGroup]="answerForm" (ngSubmit)="answerQuestion(question)">
                                     <input type="text" formControlName="Answer" />
+                                    <p class="alert alert-warning" [hidden]="answerForm.controls.Answer.valid">
+                                        Svar er obligatorisk, kan kun inneholde bokstaver fra det norske alfabetet, normale tegn, og må være over to tegn langt.
+                                    </p>
                                     <button type="submit" class="btn btn-success btn-xs">Besvar</button> <!--[disabled]="!form.valid"-->
                                 </form>
                             </div>

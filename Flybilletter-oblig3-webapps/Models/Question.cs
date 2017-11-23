@@ -18,8 +18,11 @@ namespace Flybilletter_oblig3_webapps.Models
 
     public class QuestionData
     {
+        [Required(ErrorMessage = "Person cannot be null")]
         public Person Person { get; set; }
+        [RegularExpression(@"^[a-zA-ZøæåØÆÅ .,0-9]{2,}[?]$", ErrorMessage = "Question can only be normal characters, be over two characters long, and end with a questionmark.")]
         public string Quest { get; set; }
+        [RegularExpression(@"^[0-9]{1,2}$", ErrorMessage = "Category have to be a number in the range 0-99")]
         public int Category { get; set; } // Question type ID
     }
 
@@ -115,7 +118,6 @@ namespace Flybilletter_oblig3_webapps.Models
 
         public static bool AddQuestion(QuestionData question)
         {
-            // ModelState.IsValid
             using (var db = new DB())
             {
                 try

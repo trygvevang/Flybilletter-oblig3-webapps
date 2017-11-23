@@ -7,6 +7,7 @@ using System.Web.Http;
 using Flybilletter_oblig3_webapps.Models;
 using System.Web.Script.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Flybilletter_oblig3_webapps.Controllers
 {
@@ -46,16 +47,19 @@ namespace Flybilletter_oblig3_webapps.Controllers
         }
 
         // POST api/Question
-        public HttpResponseMessage Post(QuestionData question)
+        public HttpResponseMessage Post([FromBody]QuestionData question)
         {
-            bool OK = CRUD.AddQuestion(question);
-            if (OK)
+            if (ModelState.IsValid)
             {
-                return new HttpResponseMessage()
+                bool OK = CRUD.AddQuestion(question);
+                if (OK)
                 {
-                    StatusCode = HttpStatusCode.OK
-                };
+                    return new HttpResponseMessage()
+                    {
+                        StatusCode = HttpStatusCode.OK
+                    };
 
+                }
             }
             
             return new HttpResponseMessage()
@@ -65,10 +69,11 @@ namespace Flybilletter_oblig3_webapps.Controllers
             };
         }
 
-        // PUT api/Kunde/5
+        // PUT api/Question/5
         public HttpResponseMessage Put(int id, [FromBody]Question question)
         {
-            if (ModelState.IsValid)
+            Regex answerPattern = new Regex(@"^[a-zA-Z0-9øæåØÆÅ .,!-]{2,}$");
+            if (ModelState.IsValid && question.Person != null && question.Answer != null && answerPattern.IsMatch(question.Answer))
             {
                 bool OK = CRUD.AnswerQuestion(id, question);
                 if (OK)
