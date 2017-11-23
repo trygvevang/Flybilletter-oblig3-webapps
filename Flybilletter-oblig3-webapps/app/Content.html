@@ -60,7 +60,7 @@
         </div>
         <div class="form-group">
             <label>Spørsmål</label>
-            <input class="form-control" formControlName="Question" />
+            <textarea class="form-control" formControlName="Question"></textarea>
             <p class="alert alert-warning" [hidden]="form.controls.Question.valid || (form.controls.Question.pristine && !submitted)">
                 Spørsmål må fylles inn, og Kan ikke inneholde spesialtegn tom (#¤$%). Spørsmål må også avslutte med '?'
             </p>
