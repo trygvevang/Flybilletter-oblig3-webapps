@@ -156,7 +156,7 @@ var Content = (function () {
 Content = __decorate([
     core_1.Component({
         selector: "application",
-        templateUrl: "./app/Content.html"
+        templateUrl: "./app/Content.html",
     }),
     __metadata("design:paramtypes", [http_1.Http, forms_1.FormBuilder])
 ], Content);

@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <!-- List all questions -->
+    <!-- List all answered questions -->
     <div class="list-group">
         <div class="list-group-item row_div_parent" *ngFor="let category of allCategories">
             <a data-toggle="collapse" href="#{{category.ID + '_ul'}}"><h4 class="panel-title">{{category.Type}}</h4></a>
@@ -97,6 +97,29 @@
 <div *ngIf="showUnansweredUserQuestion" class="col-md-8 col-md-offset-2 body-content"> <!-- "Ubesvarte spørsmål" -->
     <h1 class="text-center">Ubesvarte brukerspørsmål</h1>
 
+    <!-- Search for questions -->
+    <input class="form-control" [(ngModel)]="keyword" type="text" placeholder="Søk etter spørsmål" />
+    <div *ngIf="keyword" class="list-group">
+        <div class="list-group-item row_div_parent">
+            <h4 class="panel-title">Spørsmål som inneholder "{{keyword}}"</h4><!--if keyword is nonsense (like space or a .) then display something else-->
+            <div class="container" *ngFor="let question of unansweredQuestions | SearchPipe: keyword">
+                <a data-toggle="collapse" href="#{{question.ID + '_search'}}">{{question.Quest}}</a>
+                <div class="collapse" id="{{question.ID + '_search'}}">
+                    Stilt av: {{question.Person.Firstname + " " + question.Person.Lastname}}, {{question.Person.Email}}
+                    <button *ngIf="!isAnsweringQuestion" class="btn btn-danger btn-xs" (click)="showAnswerQForm()">Besvar spørsmål</button>
+                    <form *ngIf="isAnsweringQuestion" [formGroup]="answerForm" (ngSubmit)="answerQuestion(question)">
+                        <input type="text" formControlName="Answer" />
+                        <p class="alert alert-warning" [hidden]="answerForm.controls.Answer.valid">
+                            Svar er obligatorisk, kan kun inneholde bokstaver fra det norske alfabetet, normale tegn, og må være over to tegn langt.
+                        </p>
+                        <button type="submit" class="btn btn-success btn-xs">Besvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- List all unanswered questions -->
     <div class="list-group">
         <div class="list-group-item row_div_parent" *ngFor="let category of allCategories">
             <a data-toggle="collapse" href="#{{category.ID + '_unanswered'}}"><h4 class="panel-title">{{category.Type}}</h4></a>
@@ -107,7 +130,7 @@
                     <div *ngFor="let question of category.Questions" class="row_div_child">
                         <a *ngIf="!question.Answer" data-toggle="collapse" href="#{{category.ID + '_' + question.ID + '_unanswered'}}">{{question.Quest}}</a>
                         <div class="panel-collapse collapse" id="{{category.ID + '_' + question.ID + '_unanswered'}}">
-                            <div *ngIf="question.Person">Stilt av: {{question.Person.Firstname + " " + question.Person.Lastname}}, {{question.Person.Email}}</div> <!--Only show personal info if question is user-question, and is not yet answered-->
+                            <div *ngIf="question.Person">Stilt av: {{question.Person.Firstname + " " + question.Person.Lastname}}, {{question.Person.Email}}</div> <!--Only show personal info if question is user-asked, and is not yet answered-->
                             <div>
                                 <button *ngIf="!isAnsweringQuestion" class="btn btn-danger btn-xs" (click)="showAnswerQForm()">Besvar spørsmål</button>
                                 <form *ngIf="isAnsweringQuestion" [formGroup]="answerForm" (ngSubmit)="answerQuestion(question)">
@@ -115,7 +138,7 @@
                                     <p class="alert alert-warning" [hidden]="answerForm.controls.Answer.valid">
                                         Svar er obligatorisk, kan kun inneholde bokstaver fra det norske alfabetet, normale tegn, og må være over to tegn langt.
                                     </p>
-                                    <button type="submit" class="btn btn-success btn-xs">Besvar</button> <!--[disabled]="!form.valid"-->
+                                    <button type="submit" class="btn btn-success btn-xs">Besvar</button>
                                 </form>
                             </div>
                         </div>
