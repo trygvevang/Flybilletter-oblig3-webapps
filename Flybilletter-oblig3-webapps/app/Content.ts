@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from "@angular/core";
+﻿import { Component, OnInit, Pipe, PipeTransform } from "@angular/core";
 import { Http, Response } from '@angular/http';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import "rxjs/add/operator/map";
@@ -10,25 +10,29 @@ import { Person } from './Person';
 
 @Component({
     selector: "application",
-    templateUrl: "./app/Content.html"
+    templateUrl: "./app/Content.html",
 })
 
 export class Content {
     showFAQ: boolean;
     showUnansweredUserQuestion: boolean;
     submitQ: boolean;
-    allQuestions: Array<Question>;
     allCategories: Array<QuestionCategory>;
+    answeredQuestions: Array<Question>;
+    unansweredQuestions: Array<Question>;
     form: FormGroup;
     answerForm: FormGroup;
     loading: boolean;
     isAnsweringQuestion: boolean;
 
+    //for search
+    keyword: string;
+
     constructor(private _http: Http, private fb: FormBuilder) {
         this.form = fb.group({
             ID: [""],
-            Firstname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
-            Lastname: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
+            Firstname: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-ZøæåØÆÅ\\-. ]{2,30}$")])],
+            Lastname: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-ZøæåØÆÅ\\-. ]{2,30}$")])],
             Email: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9 -_.]+@[a-zA-Z]+.[a-zA-Z]{2,3}$")])],
             Question: [null, Validators.compose([Validators.required, Validators.pattern("^[a-zA-ZøæåØÆÅ .,0-9\n]{2,}[?]$")])],
             Category: [null, Validators.compose([Validators.required, Validators.pattern("^[0-9]{1,2}$")])]
@@ -39,6 +43,7 @@ export class Content {
     }
 
     ngOnInit() {
+        this.keyword = '';
         this.loading = true;
         this.showFAQ = true;
         this.submitQ = false;
@@ -46,25 +51,7 @@ export class Content {
         this.isAnsweringQuestion = false;
         this.getAllCategories();
     }
-
-    getAll() {
-        this._http.get("api/Question")
-            .map(data => {
-                let jsonData = data.json();
-                return jsonData;
-            })
-            .subscribe(jsonData => {
-                this.allQuestions = [];
-                if (jsonData) {
-                    for (let question of jsonData) {
-                        this.allQuestions.push(question);
-                    }
-                    this.loading = false;
-                }
-            },
-            error => alert(error), () => console.log("All questions loaded (get-api/Question)."));
-    }
-
+    
     getAllCategories() {
         this._http.get("api/QuestionCategory")
             .map(data => {
@@ -73,9 +60,16 @@ export class Content {
             })
             .subscribe(jsonData => {
                 this.allCategories = [];
+                this.answeredQuestions = [];
+                this.unansweredQuestions = [];
                 if (jsonData) {
-                    for (let questType of jsonData) {
-                        this.allCategories.push(questType);
+                    for (let questCat of jsonData) {
+                        this.allCategories.push(questCat);
+                        if (questCat.Questions) for (let question of questCat.Questions) {
+                            if (question.Answer)
+                                this.answeredQuestions.push(question);
+                            else this.unansweredQuestions.push(question);
+                        }
                     }
                     this.loading = false;
                 }
@@ -130,13 +124,11 @@ export class Content {
 
         var body: string = JSON.stringify(question);
         var headers = new Headers({ "Content-Type": "application/json" });
-
-        console.log(body);
+        
         this._http.post("api/Question", body, { headers: headers })
             .map(returData => returData.toString())
             .subscribe(
             retur => {
-                this.getAll();
                 this.getAllCategories();
                 this.submitQ = false;
                 this.showFAQ = true;
@@ -175,7 +167,6 @@ export class Content {
             .map(returData => returData.toString())
             .subscribe(
             retur => {
-                this.getAll();
                 this.getAllCategories();
             },
             error => alert(error),

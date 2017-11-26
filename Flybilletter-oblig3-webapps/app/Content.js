@@ -23,8 +23,8 @@ var Content = (function () {
         this.fb = fb;
         this.form = fb.group({
             ID: [""],
-            Firstname: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
-            Lastname: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("[a-zA-ZøæåØÆÅ\\-. ]{2,30}")])],
+            Firstname: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-ZøæåØÆÅ\\-. ]{2,30}$")])],
+            Lastname: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-ZøæåØÆÅ\\-. ]{2,30}$")])],
             Email: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-Z0-9 -_.]+@[a-zA-Z]+.[a-zA-Z]{2,3}$")])],
             Question: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-ZøæåØÆÅ .,0-9\n]{2,}[?]$")])],
             Category: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern("^[0-9]{1,2}$")])]
@@ -34,30 +34,13 @@ var Content = (function () {
         });
     }
     Content.prototype.ngOnInit = function () {
+        this.keyword = '';
         this.loading = true;
         this.showFAQ = true;
         this.submitQ = false;
         this.showUnansweredUserQuestion = false;
         this.isAnsweringQuestion = false;
         this.getAllCategories();
-    };
-    Content.prototype.getAll = function () {
-        var _this = this;
-        this._http.get("api/Question")
-            .map(function (data) {
-            var jsonData = data.json();
-            return jsonData;
-        })
-            .subscribe(function (jsonData) {
-            _this.allQuestions = [];
-            if (jsonData) {
-                for (var _i = 0, jsonData_1 = jsonData; _i < jsonData_1.length; _i++) {
-                    var question = jsonData_1[_i];
-                    _this.allQuestions.push(question);
-                }
-                _this.loading = false;
-            }
-        }, function (error) { return alert(error); }, function () { return console.log("All questions loaded (get-api/Question)."); });
     };
     Content.prototype.getAllCategories = function () {
         var _this = this;
@@ -68,10 +51,20 @@ var Content = (function () {
         })
             .subscribe(function (jsonData) {
             _this.allCategories = [];
+            _this.answeredQuestions = [];
+            _this.unansweredQuestions = [];
             if (jsonData) {
-                for (var _i = 0, jsonData_2 = jsonData; _i < jsonData_2.length; _i++) {
-                    var questType = jsonData_2[_i];
-                    _this.allCategories.push(questType);
+                for (var _i = 0, jsonData_1 = jsonData; _i < jsonData_1.length; _i++) {
+                    var questCat = jsonData_1[_i];
+                    _this.allCategories.push(questCat);
+                    if (questCat.Questions)
+                        for (var _a = 0, _b = questCat.Questions; _a < _b.length; _a++) {
+                            var question = _b[_a];
+                            if (question.Answer)
+                                _this.answeredQuestions.push(question);
+                            else
+                                _this.unansweredQuestions.push(question);
+                        }
                 }
                 _this.loading = false;
             }
@@ -118,11 +111,9 @@ var Content = (function () {
         question.Category = category;
         var body = JSON.stringify(question);
         var headers = new http_2.Headers({ "Content-Type": "application/json" });
-        console.log(body);
         this._http.post("api/Question", body, { headers: headers })
             .map(function (returData) { return returData.toString(); })
             .subscribe(function (retur) {
-            _this.getAll();
             _this.getAllCategories();
             _this.submitQ = false;
             _this.showFAQ = true;
@@ -153,7 +144,6 @@ var Content = (function () {
         this._http.put("api/Question/" + question.ID, body, { headers: headers })
             .map(function (returData) { return returData.toString(); })
             .subscribe(function (retur) {
-            _this.getAll();
             _this.getAllCategories();
         }, function (error) { return alert(error); }, function () { return console.log("Question answered (post-api/Question)"); });
         this.answerForm.setValue({

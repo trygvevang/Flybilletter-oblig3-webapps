@@ -81,6 +81,26 @@ namespace Flybilletter_oblig3_webapps.Models
             return null;
         }
 
+        public static List<Question> GetQuestionsWSearch(string keyword)
+        {
+            //Regex.match(keyword)
+            if (keyword != null)
+            {
+                using (var db = new DB())
+                {
+                    try
+                    {
+                        return db.Questions.Where(k => k.Quest.Contains(keyword)).ToList();
+                    }
+                    catch (Exception e)
+                    {
+                        // TODO: Handle exception
+                    }
+                }
+            }
+            return null;
+        }
+
         public static List<QuestionCategory> GetAllQuestionCategories()
         {
             using (var db = new DB())

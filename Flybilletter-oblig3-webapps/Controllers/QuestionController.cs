@@ -46,6 +46,20 @@ namespace Flybilletter_oblig3_webapps.Controllers
             };
         }
 
+        public HttpResponseMessage Get(string keyword)
+        {
+            var question = CRUD.GetQuestionsWSearch(keyword);
+
+            var json = new JavaScriptSerializer();
+            var stringJson = json.Serialize(question);
+
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent(stringJson, Encoding.UTF8, "application/json"),
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+
         // POST api/Question
         public HttpResponseMessage Post([FromBody]QuestionData question)
         {

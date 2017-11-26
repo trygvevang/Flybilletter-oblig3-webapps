@@ -7,22 +7,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var platform_browser_1 = require("@angular/platform-browser");
-var forms_1 = require("@angular/forms");
-var http_1 = require("@angular/http");
-var Content_1 = require("./Content");
-var SearchPipe_1 = require("./SearchPipe");
-var AppModule = (function () {
-    function AppModule() {
+var SearchPipe = (function () {
+    function SearchPipe() {
     }
-    return AppModule;
+    SearchPipe.prototype.transform = function (items, value) {
+        console.log(items);
+        console.log(value);
+        if (!items)
+            return [];
+        if (!value)
+            return items;
+        return items.filter(function (pipe) {
+            return pipe.Quest.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        });
+    };
+    return SearchPipe;
 }());
-AppModule = __decorate([
-    core_1.NgModule({
-        imports: [platform_browser_1.BrowserModule, forms_1.ReactiveFormsModule, http_1.HttpModule, http_1.JsonpModule, forms_1.FormsModule],
-        declarations: [Content_1.Content, SearchPipe_1.SearchPipe],
-        bootstrap: [Content_1.Content]
+SearchPipe = __decorate([
+    core_1.Pipe({
+        name: 'SearchPipe',
     })
-], AppModule);
-exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+], SearchPipe);
+exports.SearchPipe = SearchPipe;
+//# sourceMappingURL=SearchPipe.js.map
