@@ -6,12 +6,13 @@
     </div>
 </div>
 <br /><br /><br />
+
 <div *ngIf="showFAQ" class="col-md-8 col-md-offset-2 body-content"> <!-- "Hjem" -->
     <h1 class="text-center">Hvordan kan vi hjelpe?</h1>
     <div *ngIf="loading">Laster spørsmål...</div>
    
     <!-- Search for questions -->
-    <input class="form-control" [(ngModel)]="keyword" type="text" placeholder="Søk etter spørsmål" />
+    <input class="form-control" [(ngModel)]="keyword" type="text" placeholder="Søk blant besvarte spørsmål" />
     <div *ngIf="keyword" class="list-group">
         <div class="list-group-item row_div_parent">
             <h4 class="panel-title">Spørsmål som inneholder "{{keyword}}"</h4><!--if keyword is nonsense (like space or a .) then display something else-->
@@ -49,6 +50,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 <div *ngIf="submitQ" class="col-md-8 col-md-offset-2"> <!-- "Submit" -->
@@ -80,7 +82,7 @@
             <label>Spørsmål</label>
             <textarea class="form-control" formControlName="Question"></textarea>
             <p class="alert alert-warning" [hidden]="form.controls.Question.valid || (form.controls.Question.pristine && !submitted)">
-                Spørsmål må fylles inn, og Kan ikke inneholde spesialtegn tom (#¤$%). Spørsmål må også avslutte med '?'
+                Spørsmål må fylles inn, og Kan ikke inneholde spesialtegn som (#¤$%). Spørsmål må også avslutte med '?'
             </p>
         </div>
         <div class="form-group">
@@ -98,7 +100,7 @@
     <h1 class="text-center">Ubesvarte brukerspørsmål</h1>
 
     <!-- Search for questions -->
-    <input class="form-control" [(ngModel)]="keyword" type="text" placeholder="Søk etter spørsmål" />
+    <input class="form-control" [(ngModel)]="keyword" type="text" placeholder="Søk blant ubesvarte spørsmål" />
     <div *ngIf="keyword" class="list-group">
         <div class="list-group-item row_div_parent">
             <h4 class="panel-title">Spørsmål som inneholder "{{keyword}}"</h4><!--if keyword is nonsense (like space or a .) then display something else-->
