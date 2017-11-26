@@ -10,15 +10,13 @@ var core_1 = require("@angular/core");
 var SearchPipe = (function () {
     function SearchPipe() {
     }
-    SearchPipe.prototype.transform = function (items, value) {
-        console.log(items);
-        console.log(value);
-        if (!items)
+    SearchPipe.prototype.transform = function (questions, keyword) {
+        if (!questions)
             return [];
-        if (!value)
-            return items;
-        return items.filter(function (pipe) {
-            return pipe.Quest.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        if (!keyword)
+            return questions;
+        return questions.filter(function (pipe) {
+            return pipe.Quest.toLowerCase().indexOf(keyword.toLowerCase()) > -1;
         });
     };
     return SearchPipe;

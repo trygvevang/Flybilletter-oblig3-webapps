@@ -10,10 +10,10 @@ namespace Flybilletter_oblig3_webapps.Models
     {
         [Key]
         public int ID { get; set; }
-        public Person Person { get; set; }
+        public Person Person { get; set; } // If Person == null then it is a question seeded by the DB
         [Required]
         public string Quest { get; set; }
-        public string Answer { get; set; } // If answer == null then it is not answered
+        public string Answer { get; set; } // If answer == null then question is not answered
     }
 
     public class QuestionData
@@ -23,7 +23,7 @@ namespace Flybilletter_oblig3_webapps.Models
         [RegularExpression(@"^[a-zA-ZøæåØÆÅ .,0-9\n]{2,}[?]$", ErrorMessage = "Question can only be normal characters, be over two characters long, and end with a questionmark.")]
         public string Quest { get; set; }
         [RegularExpression(@"^[0-9]{1,2}$", ErrorMessage = "Category have to be a number in the range 0-99")]
-        public int Category { get; set; } // Question type ID
+        public int Category { get; set; } 
     }
 
     public class Person
@@ -56,10 +56,9 @@ namespace Flybilletter_oblig3_webapps.Models
                 }
                 catch (Exception e)
                 {
-                    // TODO: Handle exception
+                    return null;
                 }
             }
-            return null;
         }
         
         public static Question GetSingleQuestion(int ID)
@@ -74,27 +73,7 @@ namespace Flybilletter_oblig3_webapps.Models
                     }
                     catch (Exception e)
                     {
-                        // TODO: Handle exception
-                    }
-                }
-            }
-            return null;
-        }
-
-        public static List<Question> GetQuestionsWSearch(string keyword)
-        {
-            //Regex.match(keyword)
-            if (keyword != null)
-            {
-                using (var db = new DB())
-                {
-                    try
-                    {
-                        return db.Questions.Where(k => k.Quest.Contains(keyword)).ToList();
-                    }
-                    catch (Exception e)
-                    {
-                        // TODO: Handle exception
+                        return null;
                     }
                 }
             }
@@ -111,10 +90,9 @@ namespace Flybilletter_oblig3_webapps.Models
                 }
                 catch (Exception e)
                 {
-                    // TODO: Handle exception
+                    return null;
                 }
             }
-            return null;
         }
 
         public static QuestionCategory GetSingleQuestionCategory(int ID)
@@ -129,7 +107,7 @@ namespace Flybilletter_oblig3_webapps.Models
                     }
                     catch (Exception e)
                     {
-                        // TODO: Handle exception
+                        return null;
                     }
                 }
             }
@@ -169,10 +147,9 @@ namespace Flybilletter_oblig3_webapps.Models
                 }
                 catch (Exception e)
                 {
-                    // TODO: Handle exception
+                    return false;
                 }
             }
-            return false;
         }
 
         public static bool AnswerQuestion(int ID, Question question)
@@ -190,7 +167,6 @@ namespace Flybilletter_oblig3_webapps.Models
                 }
                 catch (Exception e)
                 {
-                    // TODO: Handle exception
                     return false;
                 }
             }
@@ -208,10 +184,9 @@ namespace Flybilletter_oblig3_webapps.Models
                 }
                 catch (Exception e)
                 {
-                    // TODO: Handle exception
+                    return false;
                 }
             }
-            return false;
         }
 
         public static List<Person> GetAllPeople()
@@ -224,10 +199,9 @@ namespace Flybilletter_oblig3_webapps.Models
                 }
                 catch (Exception e)
                 {
-                    // TODO: Handle exception
+                    return null;
                 }
             }
-            return null;
         }
 
         public static Person GetSinglePerson(string Firstname, string Lastname)
@@ -240,10 +214,9 @@ namespace Flybilletter_oblig3_webapps.Models
                 }
                 catch (Exception e)
                 {
-                    // TODO: Handle exception
+                    return null;
                 }
             }
-            return null;
         }
     }
     
