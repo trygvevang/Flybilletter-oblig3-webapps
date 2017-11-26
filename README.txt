@@ -1,4 +1,4 @@
-LuftKlar Kundeservice er en Angular 2 web applikasjon som snakker med et .net web-api.
+LuftKlar Kundeservice er en Angular 2 webapplikasjon som snakker med et ASP.NET WEB-API.
 
 Rammeverk som er benyttet:
     - EntityFramework v6.1.3 (Microsoft)
