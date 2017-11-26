@@ -10,10 +10,10 @@ namespace Flybilletter_oblig3_webapps.Models
     {
         [Key]
         public int ID { get; set; }
-        public Person Person { get; set; } // If Person == null then it is a question seeded by the DB
+        public Person Person { get; set; }
         [Required]
         public string Quest { get; set; }
-        public string Answer { get; set; } // If answer == null then question is not answered
+        public string Answer { get; set; }
     }
 
     public class QuestionData
@@ -36,7 +36,7 @@ namespace Flybilletter_oblig3_webapps.Models
 
     }
 
-    public class QuestionCategory // Has class because this allows to get all questions with of a certain type
+    public class QuestionCategory
     {
         [Key]
         public int ID { get; set; }

@@ -24,8 +24,6 @@ export class Content {
     answerForm: FormGroup;
     loading: boolean;
     isAnsweringQuestion: boolean;
-
-    //for search
     keyword: string;
 
     constructor(private _http: Http, private fb: FormBuilder) {
@@ -78,7 +76,7 @@ export class Content {
     }
 
     resetQuestionForm() {
-        this.form.setValue({ // Reseting form just in case there were some changes there before.
+        this.form.setValue({
             ID: "",
             Firstname: "",
             Lastname: "",
@@ -103,7 +101,7 @@ export class Content {
     }
 
     showFaq() {
-        this.resetQuestionForm(); // In case user have input data in form
+        this.resetQuestionForm();
         this.showFAQ = true;
         this.showUnansweredUserQuestion = false;
         this.submitQ = false;
@@ -140,19 +138,15 @@ export class Content {
     }
 
     showAnswerQForm() {
-        this.answerForm.setValue({ // Reseting form just in case there were some changes there before.
+        this.answerForm.setValue({ 
             Answer: ""
         });
         this.answerForm.markAsPristine();
         this.isAnsweringQuestion = true;
     }
 
-    /**
-     * Thought: Use an unsorted list in html to display questions with relevant data
-     * Could expand ul when clicked, and when other ul is clicked first one collapses
-     */
     answerQuestion(question:Question) {
-        this.isAnsweringQuestion = false; // Changing from one mode to another.
+        this.isAnsweringQuestion = false;
 
         var changedQuestion = new Question();
         changedQuestion.ID = question.ID;
@@ -173,7 +167,7 @@ export class Content {
             () => console.log("Question answered (post-api/Question)")
         );
 
-        this.answerForm.setValue({ // Reseting 
+        this.answerForm.setValue({
             Answer: ""
         });
 

@@ -12,7 +12,7 @@ namespace Flybilletter_oblig3_webapps.Controllers
 {
     public class QuestionCategoryController : ApiController
     {
-        // GET api/QuestionCategory
+        // GET all (api/QuestionCategory)
         public HttpResponseMessage Get()
         {
             List<QuestionCategory> allCategories = CRUD.GetAllQuestionCategories();
@@ -27,7 +27,7 @@ namespace Flybilletter_oblig3_webapps.Controllers
             };
         }
 
-        // GET api/QuestionCategory/5
+        // GET single (api/QuestionCategory/ID)
         public HttpResponseMessage Get(int ID)
         {
             var category = CRUD.GetSingleQuestionCategory(ID);

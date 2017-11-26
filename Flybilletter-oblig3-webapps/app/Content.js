@@ -93,7 +93,7 @@ var Content = (function () {
         this.submitQ = false;
     };
     Content.prototype.showFaq = function () {
-        this.resetQuestionForm(); // In case user have input data in form
+        this.resetQuestionForm();
         this.showFAQ = true;
         this.showUnansweredUserQuestion = false;
         this.submitQ = false;
@@ -127,13 +127,9 @@ var Content = (function () {
         this.answerForm.markAsPristine();
         this.isAnsweringQuestion = true;
     };
-    /**
-     * Thought: Use an unsorted list in html to display questions with relevant data
-     * Could expand ul when clicked, and when other ul is clicked first one collapses
-     */
     Content.prototype.answerQuestion = function (question) {
         var _this = this;
-        this.isAnsweringQuestion = false; // Changing from one mode to another.
+        this.isAnsweringQuestion = false;
         var changedQuestion = new Question_1.Question();
         changedQuestion.ID = question.ID;
         changedQuestion.Person = question.Person;
