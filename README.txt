@@ -1,4 +1,4 @@
-LuftKlar Kundeservice er en Angular 2 webapplikasjon som snakker med et ASP.NET WEB-API.
+LuftKlar Kundeservice er en Angular 2 webapplikasjon som snakker med et ASP.NET WEB-API. Denne applikasjonen var tredje og siste obligatoriske innlevering i faget ITPE3200.
 
 Rammeverk som er benyttet:
     - EntityFramework v6.1.3 (Microsoft)
@@ -6,9 +6,6 @@ Rammeverk som er benyttet:
     - bootstrap v3.3.7 (Twitter, inc.)
 
 Anmerkelser:
-    - Flere av spørsmålene som seedes er hentet fra www.norwegian.no/hjelp-og-kontakt/
-    - Alle tidligere besvarte spørsmål blir vist i "Hjem"-viewet. Brukere har ofte samme/liknende spørsmål, og det er derfor større sjanse for å finne svaret raskt dersom svar publiseres for alle. Å ikke skille mellom brukerstilte spørsmål og spørsmål som seedes fra databasen er et bevisst valg.
-    - Når en bruker stiller et spørsmål, vil det kun være synlig fra "Ubesvarte spørsmål"-viewet frem til det blir besvart. Etter spørsmålet er besvart vil det kun være synlig på "Hjem"-viewet. I praksis ville "Ubesvarte spørsmål"-viewet kun vært tilgjengelig av en administrator, da det ikke er hensiktsmessig at brukere får se ubesvarte spørsmål sammen med informasjon om person som stilte spørsmålet, samt mulighet for å besvare.
-
-Link til applikasjonen:
-    http://itpe3200-oblig-luftklar.azurewebsites.net/
+    - Flere av spÃ¸rsmÃ¥lene som seedes er hentet fra www.norwegian.no/hjelp-og-kontakt/
+    - Alle tidligere besvarte spÃ¸rsmÃ¥l blir vist i "Hjem"-viewet. Brukere har ofte samme/liknende spÃ¸rsmÃ¥l, og det er derfor stÃ¸rre sjanse for Ã¥ finne svaret raskt dersom svar publiseres for alle. Ã… ikke skille mellom brukerstilte spÃ¸rsmÃ¥l og spÃ¸rsmÃ¥l som seedes fra databasen er et bevisst valg.
+    - NÃ¥r en bruker stiller et spÃ¸rsmÃ¥l, vil det kun vÃ¦re synlig fra "Ubesvarte spÃ¸rsmÃ¥l"-viewet frem til det blir besvart. Etter spÃ¸rsmÃ¥let er besvart vil det kun vÃ¦re synlig pÃ¥ "Hjem"-viewet. I praksis ville "Ubesvarte spÃ¸rsmÃ¥l"-viewet kun vÃ¦rt tilgjengelig av en administrator, da det ikke er hensiktsmessig at brukere fÃ¥r se ubesvarte spÃ¸rsmÃ¥l sammen med informasjon om person som stilte spÃ¸rsmÃ¥let, samt mulighet for Ã¥ besvare.
